@@ -1,3 +1,5 @@
 eclipse.preferences.version=1
+encoding//properties/account.properties=UTF-8
+encoding//properties/config.properties=UTF-8
 encoding/<project>=UTF-8
 encoding/Log4j.properties=UTF-8
