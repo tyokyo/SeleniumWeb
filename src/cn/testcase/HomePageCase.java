@@ -17,7 +17,7 @@ public class HomePageCase  extends VP{
 	}
 	@Test
 	public void testHome(){
-		TakeScreen.takeScreenShot();
+		TakeScreen.takeScreenShotWithDraw("好味道alcatel");
 		HomePage.clickLoginbtn();
 	}
 	@AfterTest

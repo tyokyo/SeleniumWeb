@@ -5,7 +5,7 @@
 	<parameter name="password" value="123456789" />
 	<test verbose="2" preserve-order="true" name="HomePageCase">
 		<classes>
-			<class name="view.testcase.HomePageCase" />
+			<class name="cn.testcase.HomePageCase" />
 		</classes>
 	</test>
 </suite>
