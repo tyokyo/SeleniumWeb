@@ -1,13 +1,13 @@
-package view.testcase;
+package cn.testcase;
 
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+import cn.page.HomePage;
 import model.VP;
 import util.TakeScreen;
-import view.po.HomePage;
 
 public class HomePageCase  extends VP{
 	@BeforeTest
@@ -17,10 +17,8 @@ public class HomePageCase  extends VP{
 	}
 	@Test
 	public void testHome(){
-		HomePage hPage = new HomePage();
-		
 		TakeScreen.takeScreenShot();
-		hPage.clickLoginbtn();
+		HomePage.clickLoginbtn();
 	}
 	@AfterTest
 	public void afterTest(){
