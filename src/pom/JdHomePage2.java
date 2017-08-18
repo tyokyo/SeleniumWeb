@@ -1,4 +1,4 @@
-package pomex;
+package pom;
 
 
 import java.util.concurrent.TimeUnit;
@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class JdHomePage {
+public class JdHomePage2 {
 	
 	WebDriver driver;
 	// 元素定位
@@ -27,7 +27,7 @@ public class JdHomePage {
 	
 	// 业务逻辑和操作方法
     // 构造方法
-    public JdHomePage(WebDriver driver){
+    public JdHomePage2(WebDriver driver){
     	this.driver = driver;
     }
     

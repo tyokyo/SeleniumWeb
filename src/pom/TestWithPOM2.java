@@ -1,11 +1,11 @@
-package pomex;
+package pom;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class TestWithPOM {
+public class TestWithPOM2 {
 	
 	 WebDriver driver;
 	
@@ -22,7 +22,7 @@ public class TestWithPOM {
 	@Test
 	public void testLogin(){
 		
-		JdHomePage hp = new JdHomePage(driver);
+		JdHomePage2 hp = new JdHomePage2(driver);
 		
 		hp.clickLoginLink();
 		hp.inputPassword("user1");
