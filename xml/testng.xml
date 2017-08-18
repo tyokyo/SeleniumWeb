@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="1503036364347" parallel="classes" thread-count="3">
+	<parameter name="browser" value="firefox" />
+	<parameter name="username" value="tyokyo@126.com" />
+	<parameter name="password" value="123456789" />
+	<test verbose="2" preserve-order="true" name="Appium-IOS">
+		<classes>
+			<class name="view.testcase.BaiduTest" />
+			<class name="view.testcase.HomePageCase" />
+		</classes>
+	</test>
+</suite>
