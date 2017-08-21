@@ -6,8 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
-
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
@@ -20,9 +18,9 @@ import org.testng.Reporter;
 import org.uncommons.reportng.Reporters;
 
 import run.TestNgXml;
+import util.Log;
 
 public class VP  extends BaseSelenium{
-	private  static Logger logger = Logger.getLogger(VP.class.getName());
 	private static String SEPERATE="/";
 
 	/**
@@ -31,6 +29,7 @@ public class VP  extends BaseSelenium{
 	 * @param by
 	 */
 	public static void clickElement(By by){
+		Log.info("click by - "+by.toString());
 		getDriver().findElement(by).click();
 	}
 	
@@ -44,7 +43,9 @@ public class VP  extends BaseSelenium{
 	* @throws 
 	*/
 	public static void sendKeys(By by,String keys){
+		Log.info(String.format("sendKeys by=%s   keys=%s", by.toString(),keys));
 		WebElement element = getElement(by);
+		element.clear();
 		element.sendKeys(keys);
 	}
 	/**
@@ -54,6 +55,7 @@ public class VP  extends BaseSelenium{
 	 * @return WebElement
 	 */
 	public static WebElement getElement(By by){
+		Log.info(String.format("find element by=%s", by.toString()));
 		return getDriver().findElement(by);
 	}
 	/** 

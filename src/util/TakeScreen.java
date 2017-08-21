@@ -59,7 +59,7 @@ public class TakeScreen extends VP{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
-		Log.info(folderString+"/"+screenName);
+		Log.info(screenName);
 		try {
 			takeDrawRect(screenShotPath, color);
 		} catch (IOException e) {
@@ -126,7 +126,7 @@ public class TakeScreen extends VP{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}	
-			Log.info(screenShotPath);
+			Log.info(screenName);
 			takeDrawRectAndText(screenShotPath, Color.BLACK,drawText);
 			Reporters.logInfo("<br><img src=../screenshot/" + folderString+"/"+screenName + "  onclick='window.open(\"../screenshot/"+folderString+"/"+screenName+")'"+"  height='"+height+"'  width='"+width+"'/>");
 		} catch (IOException e) {

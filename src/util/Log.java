@@ -3,8 +3,8 @@ package util;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Logger;
 
+import org.apache.log4j.Logger;
 import org.testng.Reporter;
 
 /** Simple logger interface. */
