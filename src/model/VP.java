@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -12,6 +13,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.os.WindowsUtils;
 import org.testng.ITestResult;
 import org.testng.Reporter;
 import org.uncommons.reportng.Reporters;
@@ -28,6 +31,20 @@ public class VP  extends BaseSelenium{
 	 */
 	public static void clickElement(By by){
 		getDriver().findElement(by).click();
+	}
+	
+	/** 
+	* @Title: sendKeys 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 输入字符
+	*  @param by       定位元素
+	*  @param keys    String  
+	* @return void    返回类型 
+	* @throws 
+	*/
+	public static void sendKeys(By by,String keys){
+		WebElement element = getElement(by);
+		element.sendKeys(keys);
 	}
 	/**
 	 * 获取对象
@@ -109,6 +126,15 @@ public class VP  extends BaseSelenium{
 			Reporters.logDebug(true,"getDriver() is NULL, screenshot Skipped");
 		}
 	}
+
+	/** 
+	 * @Title: wait 
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 等待方法 
+	 *  @param time    等待时间（秒）
+	 * @return void    返回类型 
+	 * @throws 
+	 */
 	public static void wait(int time){
 		try {
 			TimeUnit.SECONDS.sleep(time);
@@ -116,5 +142,85 @@ public class VP  extends BaseSelenium{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} // sleeping for 4 minutes
+	}
+	/** 
+	 * @Title: rightClickMouse 
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 模拟鼠标操作
+	 *  @param by    过滤器
+	 * @return void    返回类型 
+	 * @throws 
+	 */
+	public static void rightClickMouse(By by)
+	{
+		Actions action = new Actions(getDriver());
+		action.contextClick(getDriver().findElement(by)).perform();    
+	}
+
+	/** 
+	 * @Title: killProcess 
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 杀掉Windows浏览器进程  
+	 * @return void    返回类型 
+	 * @throws 
+	 */
+	public static void killProcess(String browser)
+	{
+		switch (browser.toUpperCase()) {
+		case "FIREFOX":
+			// kill firefox
+			WindowsUtils.killByName("firefox.exe");
+			break;
+		case "CHROME":
+			// kill chrome
+			WindowsUtils.killByName("chrome.exe");
+			break;
+		case "IE":
+			// kill IE
+			WindowsUtils.killByName("iexplore.exe");
+			break;
+		default:
+			System.out.println("error browser name");
+			break;
+		}
+	}
+	
+	/** 
+	* @Title: moveTo 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 滚动条滚动到元素位置
+	*  @param by    元素
+	* @return void    返回类型 
+	* @throws 
+	*/
+	public static void moveTo(By by){
+		Actions action = new Actions(getDriver()); 
+		WebElement toFindElement = getDriver().findElement(by);
+		action.moveToElement(toFindElement).build().perform(); 
+	}
+	// 操作弹出窗口
+	public static void multipleWindowsTitle() throws Exception
+	{
+		String url="E:\\StashFolder\\huoli_28@hotmail.com\\Stash\\Tank-MoneyProject\\Selenium Webdriver\\AllUIElement.html";
+		getDriver().get(url);
+		// 获取当前窗口的句柄
+		String parentWindowId = getDriver().getWindowHandle();
+		System.out.println("driver.getTitle(): " + getDriver().getTitle());
+
+		WebElement button = getDriver().findElement(By.xpath("//input[@value='打开窗口']"));
+		button.click();
+
+		Set<String> allWindowsId = getDriver().getWindowHandles();
+		// 获取所有的打开窗口的句柄
+		for (String windowId : allWindowsId) {
+			if (getDriver().switchTo().window(windowId).getTitle().contains("博客园")) {
+				getDriver().switchTo().window(windowId);
+				break;
+			}
+		}
+		System.out.println("driver.getTitle(): " + getDriver().getTitle());
+		// 再次切换回原来的父窗口
+		getDriver().switchTo().window(parentWindowId);
+		System.out.println("parentWindowId: " + getDriver().getTitle());
 	}
 }
