@@ -27,6 +27,7 @@ public class VP  extends BaseSelenium{
 
 	/**
 	 * 点击操作
+	 * @author qiang.zhang@ck-telecom.com
 	 * @param by
 	 */
 	public static void clickElement(By by){
@@ -48,59 +49,164 @@ public class VP  extends BaseSelenium{
 	}
 	/**
 	 * 获取对象
+	 * @author qiang.zhang@ck-telecom.com
 	 * @param by
 	 * @return WebElement
 	 */
 	public static WebElement getElement(By by){
 		return getDriver().findElement(by);
 	}
+	/** 
+	* @Title: clickById 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description:  id 定位点击元素 
+	*  @param id    
+	* @return void    返回类型 
+	* @throws 
+	*/
 	public static void clickById(String id){
 		getDriver().findElement(By.id(id)).clear();
 	}
-	//By.cssSelector
-	public static void clickByCssSelector(String id){
-		getDriver().findElement(By.cssSelector(id)).click();
+	
+	/** 
+	* @Title: clickByCssSelector 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: cssSelector 定位点击元素 
+	*  @param cssSelector    
+	* @return void    
+	* @throws 
+	*/
+	public static void clickByCssSelector(String cssSelector){
+		getDriver().findElement(By.cssSelector(cssSelector)).click();
 	}
 	//By.linkText
+	/** 
+	* @Title: clickByLinkText 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: TODO(这里用一句话描述这个方法的作用) 
+	*  @param linkText    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	*/
 	public static void clickByLinkText(String linkText){
 		getDriver().findElement(By.linkText(linkText)).click();
 	}
 	//By.name
+	/** 
+	* @Title: clickByName 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 通过name 点击元素
+	*  @param name    
+	* @return void    返回类型 
+	* @throws 
+	*/
 	public static void clickByName(String name){
 		getDriver().findElement(By.name(name)).click();
 	}
 	//By.xpath
+	/** 
+	* @Title: clickByXpath 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 通过xpath 点击元素
+	*  @param xpathExpression    
+	* @return void    返回类型 
+	* @throws 
+	*/
 	public static void clickByXpath(String xpathExpression){
 		getDriver().findElement(By.xpath(xpathExpression)).click();
 	}
 	//By.partialLinkText
+	/** 
+	* @Title: clickByPartialLinkText 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: TODO(这里用一句话描述这个方法的作用) 
+	*  @param linkText    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	*/
 	public static void clickByPartialLinkText(String linkText){
 		getDriver().findElement(By.partialLinkText(linkText)).click();
 	}
 	//click By.id
+	/** 
+	* @Title: getElementById 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: TODO(这里用一句话描述这个方法的作用) 
+	*  @param id    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	*/
 	public static void getElementById(String id){
 		getDriver().findElement(By.id(id));
 	}
 	//By.cssSelector
+	/** 
+	* @Title: getElementByCssSelector 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: TODO(这里用一句话描述这个方法的作用) 
+	*  @param id    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	*/
 	public static void getElementByCssSelector(String id){
 		getDriver().findElement(By.cssSelector(id));
 	}
 	//By.linkText
+	/** 
+	* @Title: getElementByLinkText 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 通过linkText 点击元素
+	*  @param linkText   
+	* @return void    返回类型 
+	* @throws 
+	*/
 	public static void getElementByLinkText(String linkText){
 		getDriver().findElement(By.linkText(linkText));
 	}
 	//By.name
+	/** 
+	* @Title: getElementByName 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 获取元素by name
+	*  @param name    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	*/
 	public static void getElementByName(String name){
 		getDriver().findElement(By.name(name));
 	}
 	//By.xpath
+	/** 
+	* @Title: getElementByXpath 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 获取元素by xpath
+	*  @param xpathExpression    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	*/
 	public static void getElementByXpath(String xpathExpression){
 		getDriver().findElement(By.xpath(xpathExpression));
 	}
 	//By.partialLinkText
+	/** 
+	* @Title: getElementByPartialLinkText 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 获取元素by linkText
+	*  @param linkText    设定文件 
+	* @return void    返回类型 
+	* @throws 
+	*/
 	public static void getElementByPartialLinkText(String linkText){
 		getDriver().findElement(By.partialLinkText(linkText));
 	}
+	/** 
+	* @Title: takeScreenShot 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 截取屏幕
+	*  @param tr    ITestResult
+	* @return void    返回类型 
+	* @throws 
+	*/
 	public static void takeScreenShot(ITestResult tr) {
 		if (getDriver()!=null){
 			logger.info("takeScreenShot-ITestResult-Fail");
@@ -131,7 +237,7 @@ public class VP  extends BaseSelenium{
 	 * @Title: wait 
 	 * @author qiang.zhang@ck-telecom.com
 	 * @Description: 等待方法 
-	 *  @param time    等待时间（秒）
+	 *  @param time    int
 	 * @return void    返回类型 
 	 * @throws 
 	 */
@@ -147,7 +253,7 @@ public class VP  extends BaseSelenium{
 	 * @Title: rightClickMouse 
 	 * @author qiang.zhang@ck-telecom.com
 	 * @Description: 模拟鼠标操作
-	 *  @param by    过滤器
+	 *  @param by    By 过滤器
 	 * @return void    返回类型 
 	 * @throws 
 	 */
