@@ -35,9 +35,8 @@ public class HomePageCase  extends VP{
 		HomePage.clickLoginbtn();
 		AccountPage.inputUserName(getBean().getUsername());
 		AccountPage.inputPassword(getBean().getPassword());
-		elementHighlight(AccountPage.getUserNameElement());
 		wait(10);
-		AccountPage.loginAccountBtn();
+		AccountPage.clickLoginAccountBtn();
 		TakeScreen.takeScreenShotWithDraw("Lolgin success");
 		TakeScreen.takeScreenShotWithDraw("wechat");
 		

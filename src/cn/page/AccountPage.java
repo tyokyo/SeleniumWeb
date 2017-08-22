@@ -103,13 +103,13 @@ public class AccountPage extends VP{
 		return  accountLogin;
 	}
 	/** 
-	* @Title: loginAccountBtn 
+	* @Title: clickLoginAccountBtn 
 	* @author qiang.zhang@ck-telecom.com
 	* @Description: TODO(这里用一句话描述这个方法的作用) 
 	* @return void    返回类型 
 	* @throws 
 	*/
-	public static void loginAccountBtn(){
+	public static void clickLoginAccountBtn(){
 		clickElement(loginBtn);
 	}
 	/** 
@@ -119,7 +119,7 @@ public class AccountPage extends VP{
 	* @return void    返回类型 
 	* @throws 
 	*/
-	public static void forgetPasswd(){
+	public static void clickForgetPasswd(){
 		clickElement(forgetPassword);
 	}
 	/** 
@@ -129,7 +129,7 @@ public class AccountPage extends VP{
 	* @return void    返回类型 
 	* @throws 
 	*/
-	public static void loginByWebChat(){
+	public static void clickLoginByWebChat(){
 		clickElement(loginByWebChat);
 	}
 	/** 
@@ -139,28 +139,28 @@ public class AccountPage extends VP{
 	* @return void    返回类型 
 	* @throws 
 	*/
-	public static void loginByMicroblog(){
+	public static void clickLoginByMicroblog(){
 		clickElement(loginByMicroblog);
 	}
 	/** 
-	* @Title: loginByQQ 
+	* @Title: clickLoginByQQ 
 	* @author qiang.zhang@ck-telecom.com
 	* @Description: QQ登录
 	* @return void    返回类型 
 	* @throws 
 	*/
-	public static void loginByQQ(){
+	public static void clickLoginByQQ(){
 		clickElement(loginByQQ);
 	}
 	
 	/** 
-	* @Title: regesterAccount 
+	* @Title: clickRegesterAccount 
 	* @author qiang.zhang@ck-telecom.com
 	* @Description: 注册账号 
 	* @return void    返回类型 
 	* @throws 
 	*/
-	public  static void regesterAccount(){
+	public  static void clickRegesterAccount(){
 		clickElement(regesterAccount);
 	}
 }
