@@ -21,6 +21,7 @@ import org.uncommons.reportng.Reporters;
 
 import run.TestNgXml;
 import util.Log;
+import util.TakeScreen;
 
 public class VP  extends BaseSelenium{
 	private static String SEPERATE="/";
@@ -58,10 +59,7 @@ public class VP  extends BaseSelenium{
 	 */
 	public static WebElement getElement(By by){
 		Log.info(String.format("find element by=%s", by.toString()));
-		WebElement element_node = getDriver().findElement(by);
-        JavascriptExecutor jse = (JavascriptExecutor) getDriver();
-        jse.executeScript("arguments[0].style.border='3px solid red'", element_node);
-        
+		highlightElement(by);
 		return getDriver().findElement(by);
 	}
 	/** 
@@ -337,15 +335,24 @@ public class VP  extends BaseSelenium{
 		getDriver().switchTo().window(parentWindowId);
 		System.out.println("parentWindowId: " + getDriver().getTitle());
 	}
-	public static void elementHighlight(WebElement element) {
-		for (int i = 0; i < 2; i++) {
-			JavascriptExecutor js = (JavascriptExecutor) getDriver();
-			js.executeScript(
-					"arguments[0].setAttribute('style', arguments[1]);",
-					element, "color: red; border: 5px solid red;");
-			js.executeScript(
-					"arguments[0].setAttribute('style', arguments[1]);",
-					element, "");
+
+
+	/** 
+	* @Title: highlightElement 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 高亮显示元素
+	* @param by    参数 
+	* @return void    返回类型 
+	* @throws 
+	*/
+	public static void highlightElement(By by) {
+		try {
+			WebElement element_node = getDriver().findElement(by);
+	        JavascriptExecutor jse = (JavascriptExecutor) getDriver();
+	        jse.executeScript("arguments[0].style.border='3px solid red'", element_node);
+		} catch (Exception e) {
+			TakeScreen.takeScreenShotWithDraw("NotFindBy:"+by.toString());
 		}
+		
 	}
 }
