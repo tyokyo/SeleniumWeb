@@ -6,6 +6,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+
 import util.ParameterBean;
 
 import org.apache.log4j.Logger;
@@ -34,7 +36,7 @@ public class BaseSelenium {
 		bean.setBrowser(browser);
 		bean.setUsername(username);
 		bean.setPassword(password);
-		
+
 		logger.info("start browser-"+browser);
 		PropertyConfigurator.configure(".\\Log4j.properties");  
 		switch (browser.toUpperCase()) {
@@ -58,8 +60,10 @@ public class BaseSelenium {
 		//firefox版本低于48
 		//System.setProperty("webdriver.firefox.marionette", driver_path);  
 		System.setProperty("webdriver.gecko.driver", driver_path);
+		DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+		capabilities.setCapability("marionette", true);
 		//初始化一个FireFox浏览器实例，实例名称叫driver    
-		driver=new FirefoxDriver();
+		driver=new FirefoxDriver(capabilities);
 		//最大化窗口  
 		//driver.manage().window().maximize();  
 		startSioeye();

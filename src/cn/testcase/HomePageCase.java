@@ -1,5 +1,7 @@
 package cn.testcase;
-
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
@@ -33,8 +35,12 @@ public class HomePageCase  extends VP{
 		HomePage.clickLoginbtn();
 		AccountPage.inputUserName(getBean().getUsername());
 		AccountPage.inputPassword(getBean().getPassword());
+		elementHighlight(AccountPage.getUserNameElement());
+		wait(10);
 		AccountPage.loginAccountBtn();
 		TakeScreen.takeScreenShotWithDraw("Lolgin success");
+		TakeScreen.takeScreenShotWithDraw("wechat");
+		
 	}
 	@AfterTest
 	public void afterTest(){
