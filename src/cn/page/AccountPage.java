@@ -39,7 +39,6 @@ public class AccountPage extends VP{
 	* @author qiang.zhang@ck-telecom.com
 	* @Description: 获取用户名对象
 	* @return WebElement    返回类型 
-	* @throws 
 	*/
 	public static WebElement getUserNameElement(){
 		return getElement(username);
@@ -50,18 +49,15 @@ public class AccountPage extends VP{
 	* @author qiang.zhang@ck-telecom.com
 	* @Description: 清除用户名文本框内容
 	* @return void    返回类型 
-	* @throws 
 	*/
 	public static void clearUserName(){
 		getUserNameElement().clear();
 	}
 	
 	/** 
-	* @Title: inputUserName 
 	* @author qiang.zhang@ck-telecom.com
-	* @Description: 输入用户名文本框
+	* @Description: 输入密码
 	* @return void    返回类型 
-	* @throws 
 	*/
 	public static void inputUserName(String keys){
 		sendKeys(username, keys);
@@ -72,7 +68,6 @@ public class AccountPage extends VP{
 	* @author qiang.zhang@ck-telecom.com
 	* @Description: 输入密码
 	* @return void    返回类型 
-	* @throws 
 	*/
 	public static void inputPassword(String keys){
 		sendKeys(password, keys);
@@ -82,7 +77,6 @@ public class AccountPage extends VP{
 	* @author qiang.zhang@ck-telecom.com
 	* @Description: 获取登录界面-用户登录，判定是否处于登录界面
 	* @return WebElement    返回类型 
-	* @throws 
 	*/
 	public static WebElement getTitle(){
 		return getElement(title);
@@ -92,7 +86,6 @@ public class AccountPage extends VP{
 	* @author qiang.zhang@ck-telecom.com
 	* @Description: 是否处于登录状态
 	* @return boolean    返回类型 
-	* @throws 
 	*/
 	public static boolean InLoginPage(){
 		boolean accountLogin = false;
@@ -107,17 +100,16 @@ public class AccountPage extends VP{
 	* @author qiang.zhang@ck-telecom.com
 	* @Description: TODO(这里用一句话描述这个方法的作用) 
 	* @return void    返回类型 
-	* @throws 
 	*/
 	public static void clickLoginAccountBtn(){
 		clickElement(loginBtn);
 	}
+
 	/** 
 	* @Title: clickForgetPasswd 
 	* @author qiang.zhang@ck-telecom.com
-	* @Description: 忘记密码
+	* @Description: 点击忘记密码
 	* @return void    返回类型 
-	* @throws 
 	*/
 	public static void clickForgetPasswd(){
 		clickElement(forgetPassword);
@@ -127,7 +119,6 @@ public class AccountPage extends VP{
 	* @author qiang.zhang@ck-telecom.com
 	* @Description: 微信登录
 	* @return void    返回类型 
-	* @throws 
 	*/
 	public static void clickLoginByWebChat(){
 		clickElement(loginByWebChat);
@@ -137,7 +128,6 @@ public class AccountPage extends VP{
 	* @author qiang.zhang@ck-telecom.com
 	* @Description: 微博登录
 	* @return void    返回类型 
-	* @throws 
 	*/
 	public static void clickLoginByMicroblog(){
 		clickElement(loginByMicroblog);
@@ -154,6 +144,7 @@ public class AccountPage extends VP{
 	}
 	
 	/** 
+	 * 注册账号  
 	* @Title: clickRegesterAccount 
 	* @author qiang.zhang@ck-telecom.com
 	* @Description: 注册账号 
@@ -162,5 +153,17 @@ public class AccountPage extends VP{
 	*/
 	public  static void clickRegesterAccount(){
 		clickElement(regesterAccount);
+	}
+	
+	/** 
+	* @Title: loginAccount 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 登录账号
+	* @return void    返回类型 
+	*/
+	public static void loginAccount(){
+		inputUserName(getBean().getUsername());
+		inputPassword(getBean().getPassword());
+		clickLoginAccountBtn();
 	}
 }

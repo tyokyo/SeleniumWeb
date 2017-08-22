@@ -1,12 +1,8 @@
 package cn.testcase;
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-
 import cn.page.AccountPage;
 import cn.page.HomePage;
 import model.VP;
@@ -30,13 +26,10 @@ public class HomePageCase  extends VP{
 		HomePage.clickLoginbtn();
 	}
 	@Test
-	public static void testLogin(){
+	public void testLogin(){
 		TakeScreen.takeScreenShotWithDraw("好味道alcatel");
 		HomePage.clickLoginbtn();
-		AccountPage.inputUserName(getBean().getUsername());
-		AccountPage.inputPassword(getBean().getPassword());
-		wait(10);
-		AccountPage.clickLoginAccountBtn();
+		AccountPage.loginAccount();
 		TakeScreen.takeScreenShotWithDraw("Lolgin success");
 		TakeScreen.takeScreenShotWithDraw("wechat");
 		
