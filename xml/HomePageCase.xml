@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="1503036364335" parallel="classes" thread-count="3">
-	<parameter name="browser" value="firefox" />
+	<parameter name="browser" value="chrome" />
 	<parameter name="username" value="tyokyo@126.com" />
 	<parameter name="password" value="1234567890" />
 	<test verbose="2" preserve-order="true" name="HomePageCase">
@@ -8,4 +8,5 @@
 			<class name="cn.testcase.HomePageCase" />
 		</classes>
 	</test>
+	
 </suite>
