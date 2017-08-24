@@ -32,8 +32,8 @@ public class VP  extends BaseSelenium{
 	 * @param by
 	 */
 	public static void clickElement(By by){
+		getElement(by).click();;
 		Log.info("click by - "+by.toString());
-		getDriver().findElement(by).click();
 	}
 
 	/** 
@@ -59,8 +59,13 @@ public class VP  extends BaseSelenium{
 	 */
 	public static WebElement getElement(By by){
 		Log.info(String.format("find element by=%s", by.toString()));
-		highlightElement(by);
-		return getDriver().findElement(by);
+		WebElement element = getDriver().findElement(by);
+		highlightElement(element);
+		return element;
+	}
+	public static void clickElement(WebElement element){
+		Log.info("Action-click ");
+		element.click();
 	}
 	/** 
 	 * @Title: clickById 
@@ -71,9 +76,13 @@ public class VP  extends BaseSelenium{
 	 * @throws 
 	 */
 	public static void clickById(String id){
-		getDriver().findElement(By.id(id)).clear();
+		By by = By.id(id);
+		clickElement(by);
 	}
-
+	public static void clickByClassName(String className){
+		By by = By.className(className);
+		clickElement(by);
+	}
 	/** 
 	 * @Title: clickByCssSelector 
 	 * @author qiang.zhang@ck-telecom.com
@@ -83,7 +92,8 @@ public class VP  extends BaseSelenium{
 	 * @throws 
 	 */
 	public static void clickByCssSelector(String cssSelector){
-		getDriver().findElement(By.cssSelector(cssSelector)).click();
+		By by = By.cssSelector(cssSelector);
+		clickElement(by);
 	}
 	//By.linkText
 	/** 
@@ -95,7 +105,8 @@ public class VP  extends BaseSelenium{
 	 * @throws 
 	 */
 	public static void clickByLinkText(String linkText){
-		getDriver().findElement(By.linkText(linkText)).click();
+		By by = By.linkText(linkText);
+		clickElement(by);
 	}
 	//By.name
 	/** 
@@ -107,7 +118,8 @@ public class VP  extends BaseSelenium{
 	 * @throws 
 	 */
 	public static void clickByName(String name){
-		getDriver().findElement(By.name(name)).click();
+		By by = By.name(name);
+		clickElement(by);
 	}
 	//By.xpath
 	/** 
@@ -119,7 +131,8 @@ public class VP  extends BaseSelenium{
 	 * @throws 
 	 */
 	public static void clickByXpath(String xpathExpression){
-		getDriver().findElement(By.xpath(xpathExpression)).click();
+		By by = By.xpath(xpathExpression);
+		clickElement(by);
 	}
 	//By.partialLinkText
 	/** 
@@ -131,7 +144,8 @@ public class VP  extends BaseSelenium{
 	 * @throws 
 	 */
 	public static void clickByPartialLinkText(String linkText){
-		getDriver().findElement(By.partialLinkText(linkText)).click();
+		By by = By.partialLinkText(linkText);
+		clickElement(by);
 	}
 	//click By.id
 	/** 
@@ -142,8 +156,9 @@ public class VP  extends BaseSelenium{
 	 * @return void    返回类型 
 	 * @throws 
 	 */
-	public static void getElementById(String id){
-		getDriver().findElement(By.id(id));
+	public static WebElement getElementById(String id){
+		By by = By.id(id);
+		return getElement(by);
 	}
 	//By.cssSelector
 	/** 
@@ -154,8 +169,9 @@ public class VP  extends BaseSelenium{
 	 * @return void    返回类型 
 	 * @throws 
 	 */
-	public static void getElementByCssSelector(String id){
-		getDriver().findElement(By.cssSelector(id));
+	public static WebElement getElementByCssSelector(String selector){
+		By by = By.cssSelector(selector);
+		return getElement(by);
 	}
 	//By.linkText
 	/** 
@@ -166,8 +182,9 @@ public class VP  extends BaseSelenium{
 	 * @return void    返回类型 
 	 * @throws 
 	 */
-	public static void getElementByLinkText(String linkText){
-		getDriver().findElement(By.linkText(linkText));
+	public static WebElement getElementByLinkText(String linkText){
+		By by = By.linkText(linkText);
+		return getElement(by);
 	}
 	//By.name
 	/** 
@@ -178,8 +195,9 @@ public class VP  extends BaseSelenium{
 	 * @return void    返回类型 
 	 * @throws 
 	 */
-	public static void getElementByName(String name){
-		getDriver().findElement(By.name(name));
+	public static WebElement getElementByName(String name){
+		By by = By.name(name);
+		return getElement(by);
 	}
 	//By.xpath
 	/** 
@@ -190,8 +208,9 @@ public class VP  extends BaseSelenium{
 	 * @return void    返回类型 
 	 * @throws 
 	 */
-	public static void getElementByXpath(String xpathExpression){
-		getDriver().findElement(By.xpath(xpathExpression));
+	public static WebElement getElementByXpath(String xpathExpression){
+		By by = By.xpath(xpathExpression);
+		return getElement(by);
 	}
 	//By.partialLinkText
 	/** 
@@ -202,8 +221,9 @@ public class VP  extends BaseSelenium{
 	 * @return void    返回类型 
 	 * @throws 
 	 */
-	public static void getElementByPartialLinkText(String linkText){
-		getDriver().findElement(By.partialLinkText(linkText));
+	public static WebElement getElementByPartialLinkText(String linkText){
+		By by = By.partialLinkText(linkText);
+		return getElement(by);
 	}
 	/** 
 	 * @Title: takeScreenShot 
@@ -215,8 +235,8 @@ public class VP  extends BaseSelenium{
 	 */
 	public static void takeScreenShot(ITestResult tr) {
 		if (getDriver()!=null){
-			logger.info("takeScreenShot-ITestResult-Fail");
-			logger.info(tr.getTestClass().getName()+SEPERATE+tr.getMethod().getMethodName());
+			Log.info("takeScreenShot-ITestResult-Fail");
+			Log.info(tr.getTestClass().getName()+SEPERATE+tr.getMethod().getMethodName());
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
 			String mDateTime = formatter.format(new Date());
 			//File location = new File("test-output/screenshot");
@@ -226,7 +246,7 @@ public class VP  extends BaseSelenium{
 			File srcFile = ((TakesScreenshot)getDriver()).getScreenshotAs(OutputType.FILE);
 			try {
 				FileUtils.copyFile(srcFile, new File(screenShotPath));
-				logger.info(screenShotPath);
+				Log.info(screenShotPath);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -345,13 +365,13 @@ public class VP  extends BaseSelenium{
 	* @return void    返回类型 
 	* @throws 
 	*/
-	public static void highlightElement(By by) {
+	public static void highlightElement(WebElement element) {
 		try {
-			WebElement element_node = getDriver().findElement(by);
 	        JavascriptExecutor jse = (JavascriptExecutor) getDriver();
-	        jse.executeScript("arguments[0].style.border='3px solid red'", element_node);
+	        jse.executeScript("arguments[0].style.border='3px solid red'", element);
 		} catch (Exception e) {
-			TakeScreen.takeScreenShotWithDraw("NotFindBy:"+by.toString());
+			TakeScreen.takeScreenShotWithDraw("NotFindBy");
+			e.printStackTrace();
 		}
 		
 	}
