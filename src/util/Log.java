@@ -9,7 +9,7 @@ import org.testng.Reporter;
 
 /** Simple logger interface. */
 public class Log {
-	private static Logger logger = Logger.getLogger(Log.class.getName());
+	private static Logger logger =Logger.getLogger(Log.class);
 	private static final ThreadLocal<DateFormat> DATE_FORMAT = new ThreadLocal<DateFormat>() {
 		@Override protected DateFormat initialValue() {
 			return new SimpleDateFormat("[yyyy-MM-dd HH:mm:ss]");
@@ -56,5 +56,4 @@ public class Log {
 		String timestamp = DATE_FORMAT.get().format(new Date());
 		return String.format("%s [%s.%s] ", timestamp, className, methodName);
 	}
-
 }

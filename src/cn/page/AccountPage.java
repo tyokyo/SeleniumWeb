@@ -166,4 +166,5 @@ public class AccountPage extends VP{
 		inputPassword(getBean().getPassword());
 		clickLoginAccountBtn();
 	}
+	
 }

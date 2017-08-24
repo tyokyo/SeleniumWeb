@@ -4,13 +4,13 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.os.WindowsUtils;
 import org.openqa.selenium.remote.DesiredCapabilities;
-
+import util.Log;
 import util.ParameterBean;
-
-import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator; 
 public class BaseSelenium {
 	private static  WebDriver driver;
@@ -21,10 +21,11 @@ public class BaseSelenium {
 	public static WebDriver getDriver() {
 		return driver;
 	}
-	public static Logger logger=Logger.getLogger(BaseSelenium.class.getName());
 	public static void startSioeye(){
 		//driver.manage().window().maximize();  
+		driver.manage().deleteCookieNamed("JSESSIONID");
 		driver.get("https://live.sioeye.cn/");
+		driver.manage().deleteAllCookies();
 		//设置10秒
 		driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
 	}
@@ -37,7 +38,7 @@ public class BaseSelenium {
 		bean.setUsername(username);
 		bean.setPassword(password);
 
-		logger.info("start browser-"+browser);
+		Log.info("start browser-"+browser);
 		PropertyConfigurator.configure(".\\Log4j.properties");  
 		switch (browser.toUpperCase()) {
 		case "FIREFOX":
@@ -55,7 +56,8 @@ public class BaseSelenium {
 		}
 	}
 	private static void initFireFoxDriver(){
-		logger.info("init firefox browser");
+		VP.killProcess("firefox");
+		Log.info("init firefox browser");
 		String driver_path = System.getProperty("user.dir")+"\\driver\\firefox\\64\\geckodriver.exe";
 		//firefox版本低于48
 		//System.setProperty("webdriver.firefox.marionette", driver_path);  
@@ -68,15 +70,29 @@ public class BaseSelenium {
 		//driver.manage().window().maximize();  
 		startSioeye();
 	}
+
+	/** 
+	 * @Title: initChromeDriver 
+	 * @Date:2017年8月22日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: http://chromedriver.storage.googleapis.com/2.31/notes.txt    注意版本匹配
+	 * @return void    返回类型 
+	 */
 	private static void initChromeDriver(){
-		logger.info("init chrome browser");
-		System.setProperty("webdriver.chrome.driver", ".\\Tools\\chromedriver.exe");    
+		WindowsUtils.killByName("chromedriver.exe");
+		WindowsUtils.killByName("chrome.exe");
+		
+		Log.info("init chrome browser");
+		String driver_path = System.getProperty("user.dir")+"\\driver\\chrome\\chromedriver.exe";
+		System.setProperty("webdriver.chrome.driver", driver_path);    
+		ChromeOptions o = new ChromeOptions();
+		o.addArguments("disable-extensions");
+		o.addArguments("--start-maximized");
+		o.addArguments("download.default_directory","E:\\Goluk");
+		o.setBinary(System.getProperty("user.dir")+"\\browser\\chrome\\chrome.exe");
 		//初始化一个chrome浏览器实例，实例名称叫driver    
-		driver = new ChromeDriver();    
-		//最大化窗口  
-		driver.manage().window().maximize();  
-		//设置隐性等待时间  
-		driver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);  
+		driver = new ChromeDriver(o);
+		startSioeye();
 	}
 
 	/**
@@ -86,7 +102,7 @@ public class BaseSelenium {
 	 *例如都设置中；
 	 */
 	private static  void initIE(){
-		logger.info("init ie browser");
+		Log.info("init ie browser");
 		System.setProperty("webdriver.ie.driver", ".\\Tools\\IEDriverServer.exe");    
 		//初始化一个IE浏览器实例，实例名称叫driver    
 		WebDriver driver = new  InternetExplorerDriver();   
@@ -106,7 +122,12 @@ public class BaseSelenium {
 	 * //关闭并退出浏览器
 	 */
 	public static void quiteSelenium(){
-		logger.info("quit  browser");
-		driver.quit();  
+		try {
+			Log.info("quit  browser");
+			driver.manage().deleteAllCookies();
+			driver.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 }
