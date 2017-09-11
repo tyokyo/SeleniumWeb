@@ -33,13 +33,14 @@ public class BaseSelenium {
 	 * 初始化driver
 	 */
 	public  static void initializeSelenium(String browser,String username,String password){
+		PropertyConfigurator.configure(".\\Log4j.properties");  
 		bean = new ParameterBean();
 		bean.setBrowser(browser);
 		bean.setUsername(username);
 		bean.setPassword(password);
 
 		Log.info("start browser-"+browser);
-		PropertyConfigurator.configure(".\\Log4j.properties");  
+		
 		switch (browser.toUpperCase()) {
 		case "FIREFOX":
 			initFireFoxDriver();
@@ -126,6 +127,7 @@ public class BaseSelenium {
 			Log.info("quit  browser");
 			driver.manage().deleteAllCookies();
 			driver.close();
+			driver.quit();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
