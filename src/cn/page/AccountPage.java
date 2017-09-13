@@ -16,23 +16,23 @@ import org.openqa.selenium.WebElement;
 */
 public class AccountPage extends VP{
 	//用户名输入框
-	static By username = By.id("username");
+	public static By username = By.id("username");
 	//用户登录-title
-	static By title = By.className("title");
+	public static By title = By.className("title");
 	//密码输入框
-	static By password = By.id("password");
+	public static By password = By.id("password");
 	//登录按钮
-	static By loginBtn = By.id("login-btn");
+	public static By loginBtn = By.id("login-btn");
 	//忘记密码
-	static By forgetPassword = By.id("forget-password");
+	public static By forgetPassword = By.id("forget-password");
 	//微信登录
-	static By loginByWebChat = By.className("we-chat");
+	public static By loginByWebChat = By.className("we-chat");
 	//微博登录
-	static By loginByMicroblog = By.className("microblog");
+	public static By loginByMicroblog = By.className("microblog");
 	//QQ登录
-	static By loginByQQ = By.className("qq");
+	public static By loginByQQ = By.className("qq");
 	//注册账号
-	static By regesterAccount = By.className("tips");
+	public static By regesterAccount = By.className("tips");
 	
 	/** 
 	* @Title: getUserNameElement 
