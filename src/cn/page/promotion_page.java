@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 /**
  * 
  * @ClassName: promotion_page 
- * @Description: 
+ * @Description: url=https://live.sioeye.cn/promotion/sioeyeid/conversionid
  * @author xuefan.liao
  * @date 2017年9月5日 下午5:14:22 
  *
@@ -183,4 +183,5 @@ public class promotion_page extends VP{
 	public static void clickComment_send(){
 		clickElement(comment_send);	
 	}			
+	
 }
