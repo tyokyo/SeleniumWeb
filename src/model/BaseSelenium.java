@@ -139,6 +139,8 @@ public class BaseSelenium {
 			driver.manage().deleteAllCookies();
 			driver.close();
 			driver.quit();
+			WindowsUtils.killByName("chromedriver.exe");
+			WindowsUtils.killByName("geckodriver.exe");
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
