@@ -162,6 +162,7 @@ public class AccountPage extends VP{
 	* @return void    返回类型 
 	*/
 	public static void loginAccount(){
+		HomePage.clickLoginbtn();
 		inputUserName(getBean().getUsername());
 		inputPassword(getBean().getPassword());
 		clickLoginAccountBtn();

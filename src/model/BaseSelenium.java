@@ -21,26 +21,16 @@ public class BaseSelenium {
 	public static WebDriver getDriver() {
 		return driver;
 	}
+	
+	/** 
+	* @Title: startSioeye 
+	* @Date:2017年9月13日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 启动被测页面
+	*/
 	public static void startSioeye(){
-		//driver.manage().window().maximize();  
-		driver.manage().deleteCookieNamed("JSESSIONID");
-		driver.get("https://live.sioeye.cn/");
-		driver.manage().deleteAllCookies();
-		//设置10秒
-		driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
-	}
-	/**
-	 * 初始化driver
-	 */
-	public  static void initializeSelenium(String browser,String username,String password){
-		PropertyConfigurator.configure(".\\Log4j.properties");  
-		bean = new ParameterBean();
-		bean.setBrowser(browser);
-		bean.setUsername(username);
-		bean.setPassword(password);
-
+		String browser = getBean().getBrowser();
 		Log.info("start browser-"+browser);
-		
 		switch (browser.toUpperCase()) {
 		case "FIREFOX":
 			initFireFoxDriver();
@@ -56,6 +46,16 @@ public class BaseSelenium {
 			break;
 		}
 	}
+	/**
+	 * 初始化driver 参数
+	 */
+	public  static void initialize(String browser,String username,String password){
+		PropertyConfigurator.configure(".\\Log4j.properties");  
+		bean = new ParameterBean();
+		bean.setBrowser(browser);
+		bean.setUsername(username);
+		bean.setPassword(password);
+	}
 	private static void initFireFoxDriver(){
 		VP.killProcess("firefox");
 		Log.info("init firefox browser");
@@ -69,9 +69,16 @@ public class BaseSelenium {
 		driver=new FirefoxDriver(capabilities);
 		//最大化窗口  
 		//driver.manage().window().maximize();  
-		startSioeye();
+		startTestAddress("https://live.sioeye.cn/");
 	}
-
+	public static void startTestAddress(String url){
+		//driver.manage().window().maximize();  
+		driver.manage().deleteCookieNamed("JSESSIONID");
+		driver.get(url);
+		driver.manage().deleteAllCookies();
+		//设置10秒
+		driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+	}
 	/** 
 	 * @Title: initChromeDriver 
 	 * @Date:2017年8月22日
@@ -82,7 +89,7 @@ public class BaseSelenium {
 	private static void initChromeDriver(){
 		WindowsUtils.killByName("chromedriver.exe");
 		WindowsUtils.killByName("chrome.exe");
-		
+
 		Log.info("init chrome browser");
 		String driver_path = System.getProperty("user.dir")+"\\driver\\chrome\\chromedriver.exe";
 		System.setProperty("webdriver.chrome.driver", driver_path);    
@@ -93,7 +100,7 @@ public class BaseSelenium {
 		o.setBinary(System.getProperty("user.dir")+"\\browser\\chrome\\chrome.exe");
 		//初始化一个chrome浏览器实例，实例名称叫driver    
 		driver = new ChromeDriver(o);
-		startSioeye();
+		startTestAddress("https://live.sioeye.cn/");
 	}
 
 	/**
@@ -119,9 +126,13 @@ public class BaseSelenium {
 		driver.quit();    
 	}
 
-	/**
-	 * //关闭并退出浏览器
-	 */
+	
+	/** 
+	* @Title: quiteSelenium 
+	* @Date:2017年9月13日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 关闭并退出浏览器,清除Cookies
+	*/
 	public static void quiteSelenium(){
 		try {
 			Log.info("quit  browser");

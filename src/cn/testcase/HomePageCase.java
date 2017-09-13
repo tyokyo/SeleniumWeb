@@ -24,7 +24,8 @@ public class HomePageCase  extends VP{
 	@BeforeTest
 	@Parameters({"browser","username","password"})
 	public void beforeTest(String browser,String username,String password){
-		initializeSelenium(browser,username,password);
+		initialize(browser,username,password);
+		startSioeye();
 	}
 
 	public void testHome(){

@@ -12,9 +12,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.os.WindowsUtils;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.Reporter;
 import org.uncommons.reportng.Reporters;
@@ -24,6 +29,7 @@ import util.Log;
 import util.TakeScreen;
 
 public class VP  extends BaseSelenium{
+	public static String accountPath = "properties/account.properties";
 	private static String SEPERATE="/";
 
 	/**
@@ -32,7 +38,7 @@ public class VP  extends BaseSelenium{
 	 * @param by
 	 */
 	public static void clickElement(By by){
-		getElement(by).click();;
+		getElement(by).click();
 		Log.info("click by - "+by.toString());
 	}
 
@@ -358,21 +364,60 @@ public class VP  extends BaseSelenium{
 
 
 	/** 
-	* @Title: highlightElement 
-	* @author qiang.zhang@ck-telecom.com
-	* @Description: 高亮显示元素
-	* @param by    参数 
-	* @return void    返回类型 
-	* @throws 
-	*/
+	 * @Title: highlightElement 
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 高亮显示元素
+	 * @param by    参数 
+	 * @return void    返回类型 
+	 * @throws 
+	 */
 	public static void highlightElement(WebElement element) {
 		try {
-	        JavascriptExecutor jse = (JavascriptExecutor) getDriver();
-	        jse.executeScript("arguments[0].style.border='3px solid red'", element);
+			JavascriptExecutor jse = (JavascriptExecutor) getDriver();
+			jse.executeScript("arguments[0].style.border='3px solid red'", element);
 		} catch (Exception e) {
 			TakeScreen.takeScreenShotWithDraw("NotFindBy");
 			e.printStackTrace();
 		}
-		
+	}
+	public static void waitUntilByFind(By by,int seconds){
+		Log.info(String.format("waitUntilFind  %s in  %d seconds",by.toString(),seconds ));
+		try {
+			WebDriverWait wait = new WebDriverWait(getDriver(), seconds);
+			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
+			Log.info(by.toString() + "  waitUntilFind = success");
+		} catch (Exception e) {
+			// TODO: handle exception
+			Log.info(by.toString() + " waitUntilFind = Not find ");
+		}
+	}
+	public static void waitUntilByGone(By by,int seconds){
+		Log.info(String.format("waitUntilByNotFind in %d secods",seconds));
+		boolean exit=false;
+		for (int i = 0; i < seconds; i++) {
+			try {
+				getDriver().findElement(by);
+			} catch (Exception e) {
+				Log.info("now exit");
+				exit=true;
+			}
+			if (exit) {
+				break;
+			}
+		}
+	}
+	public static WebElement waitAuto(By by, int time) {
+		try {
+			return new WebDriverWait(getDriver(), time).until(new ExpectedCondition<WebElement>() {
+				@Override
+				public WebElement apply(WebDriver webDriver) {
+					Log.info("查找结果-success-" + time + " 秒之内找到元素 [" + by.toString() + "]");
+					return (WebElement) webDriver.findElement(by);
+				}
+			});
+		} catch (TimeoutException e) {
+			Log.info("查找元素失败-超时- " + time + " 秒之后还没找到元素 [" + by.toString() + "]");
+			return null;
+		}
 	}
 }
