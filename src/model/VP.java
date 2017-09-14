@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.io.FileUtils;
@@ -420,6 +421,38 @@ public class VP  extends BaseSelenium{
 		} catch (TimeoutException e) {
 			Log.info("查找元素失败-超时- " + time + " 秒之后还没找到元素 [" + by.toString() + "]");
 			return null;
+		}
+	}
+	/**
+	 * 获得随机字符
+	 */
+	public static String getRandomString(int length) {
+		String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		Random random = new Random();
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < length; i++) {
+			int number = random.nextInt(62);
+			sb.append(str.charAt(number));
+		}
+		return sb.toString();
+	}
+	/**
+	 * 判断控件时候存在
+	 *
+	 * @param by By
+	 * @param timeout 等待的事件
+	 * @return
+	 */
+	public boolean isElementExist(By by, int timeout) {
+		try {
+			WebElement element = waitAuto(by, timeout);
+			if (element == null) {
+				return false;
+			}else {
+				return true;
+			}
+		} catch (Exception e) {
+			return false;
 		}
 	}
 }
