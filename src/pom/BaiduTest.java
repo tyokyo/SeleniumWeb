@@ -1,23 +1,20 @@
 package pom;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 public class BaiduTest {
     public static void main(String[] args) {
-    	String driver_path = System.getProperty("user.dir")+"\\driver\\firefox\\64\\geckodriver.exe";
-		System.out.println(driver_path);
-		System.setProperty("webdriver.gecko.driver", driver_path);
-		
-        WebDriver driver = new FirefoxDriver();
-        //最大化窗口  
-  		driver.manage().window().maximize(); 
+    	String driver_path = System.getProperty("user.dir")+"\\driver\\chrome\\chromedriver.exe";
+    	 System.setProperty("webdriver.chrome.driver", driver_path);
+         ChromeOptions o = new ChromeOptions();
+         o.addArguments("disable-extensions");
+         o.addArguments("--start-maximized");
+         o.setBinary("D:\\Browser\\Chrome\\chrome.exe");
+         WebDriver driver = new ChromeDriver(o);
         driver.get("https://www.baidu.com/");
-     
-        driver.findElement(By.id("kw")).sendKeys("selenium java");
-        driver.findElement(By.id("su")).click();
-        driver.quit();
+        driver.close();
     }
 
 }

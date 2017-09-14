@@ -4,16 +4,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
 import model.BaseSelenium;
+import util.Log;
 import util.Property;
 
 public class TestNgXml extends BaseSelenium {
-	public static Logger logger=Logger.getLogger(TestNgXml.class.getName());
 	public static String reportFolder="test-output/";
 	public static String htmlFolder="test-output/html";
 	public static String screenshotFolder="test-output/screenshot";
@@ -205,9 +203,9 @@ public class TestNgXml extends BaseSelenium {
 		makeDir(reportFolder);
 		makeDir(htmlFolder);
 		makeDir(screenshotFolder);
-		logger.info(reportFolder);
-		logger.info(htmlFolder);
-		logger.info(screenshotFolder);
+		Log.info(reportFolder);
+		Log.info(htmlFolder);
+		Log.info(screenshotFolder);
 	}
 	public static void endMakeReport() throws Exception{
 		System.out.println("report dirctory : "+reportFolder);

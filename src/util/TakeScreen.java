@@ -12,22 +12,24 @@ import java.awt.Font;
 import java.awt.Graphics;  
 import java.awt.Image;  
 import java.awt.image.BufferedImage;  
+
 import javax.imageio.ImageIO;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.uncommons.reportng.Reporters;
+
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
+
 import model.VP;
 import run.TestNgXml;
 
 public class TakeScreen extends VP{
 	public  static int DISPLAY = 1; 
-	Logger logger=Logger.getLogger(TakeScreen.class.getName());
-	
 	private static String getPrefix() {
 		StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 		if (stackTrace == null || stackTrace.length < 4) return "BOGUS";
@@ -59,7 +61,7 @@ public class TakeScreen extends VP{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
-		Log.info(folderString+"/"+screenName);
+		Log.info(screenName);
 		try {
 			takeDrawRect(screenShotPath, color);
 		} catch (IOException e) {
@@ -103,6 +105,7 @@ public class TakeScreen extends VP{
 		return screenShotPath;
 	}
 	public static void takeScreenShotWithDraw(String drawText){
+		Log.info(drawText);
 		try {
 	        // get browser size
 	        Dimension browser_size = getDriver().manage().window().getSize();
@@ -126,7 +129,7 @@ public class TakeScreen extends VP{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}	
-			Log.info(screenShotPath);
+			Log.info(screenName);
 			takeDrawRectAndText(screenShotPath, Color.BLACK,drawText);
 			Reporters.logInfo("<br><img src=../screenshot/" + folderString+"/"+screenName + "  onclick='window.open(\"../screenshot/"+folderString+"/"+screenName+")'"+"  height='"+height+"'  width='"+width+"'/>");
 		} catch (IOException e) {

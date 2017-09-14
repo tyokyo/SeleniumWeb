@@ -2,7 +2,7 @@ package cn.page;
 
 import model.VP;
 import org.openqa.selenium.By;
-
+//https://live.sioeye.cn/watch
 public class HomePage  extends VP{
 	//Sioeye喜爱直播相机官网
 	static By logo = By.className("ttbar-login");
@@ -17,28 +17,66 @@ public class HomePage  extends VP{
 	//登录
 	static By btn_login = By.cssSelector("a[class='btn-login avatar']");
 
-	//点击相机官网
+	
+	/** 
+	* @Title: clickLogo 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 点击相机官网
+	* @return void    返回类型 
+	*/
 	public static void clickLogo(){
 		clickElement(logo);
 	}
-	//点击发现
+	
+	/** 
+	* @Title: clickDiscover 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 点击发现 
+	* @return void    返回类型 
+	*/
 	public static void clickDiscover(){
 		clickElement(discover);
 	}
-	//点击关注
+	
+	/** 
+	* @Title: clickFollow 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 点击关注
+	* @return void    返回类型 
+	*/
 	public static void clickFollow(){
 		clickElement(follow);
 	}
-	//点击消息
+	
+	/** 
+	* @Title: clickNotifacations 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 点击消息   
+	* @return void    返回类型 
+	*/
 	public static void clickNotifacations(){
 		clickElement(notifications);
 	}
-	//点击搜索
+	
+	/** 
+	* @Title: clickSearchbtn 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 点击搜索
+	* @return void    返回类型 
+	*/
 	public static void clickSearchbtn(){
 		clickElement(btn_search);
 	}
-	//点击登录
+	
+	/** 
+	* @Title: clickLoginbtn 
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 点击登录    
+	* @return void    返回类型 
+	*/
 	public static void clickLoginbtn(){
 		clickElement(btn_login);
 	}
+	
+	
 }
