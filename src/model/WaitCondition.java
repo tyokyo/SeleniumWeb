@@ -5,6 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import util.Log;
+
 public class WaitCondition extends VP {
 	
 	/** 
@@ -32,7 +34,16 @@ public class WaitCondition extends VP {
 		wait.until(ExpectedConditions.presenceOfElementLocated(by));
 	}
 	public static void waitTextToBePresentInElementValue(By locator,String text,int timeOutInSeconds){
+		Log.info(locator.toString(), "-text="+text,"timeOutInSeconds="+timeOutInSeconds);
 		WebDriverWait wait = new WebDriverWait(getDriver(), timeOutInSeconds);
 		wait.until(ExpectedConditions.textToBePresentInElementValue(locator, text));
+	}
+	public static void waitAertIsPresent(int timeOutInSeconds){
+		WebDriverWait wait = new WebDriverWait(getDriver(), timeOutInSeconds);
+		wait.until(ExpectedConditions.alertIsPresent());
+	}
+	public static void waitAertIsNotPresent(int timeOutInSeconds){
+		WebDriverWait wait = new WebDriverWait(getDriver(), timeOutInSeconds);
+		wait.until(ExpectedConditions.not(ExpectedConditions.alertIsPresent()));
 	}
 }
