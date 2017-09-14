@@ -175,5 +175,16 @@ public class AccountPage extends VP{
 		inputPassword(getBean().getPassword());
 		clickLoginAccountBtn();
 	}
-
+	
+	/** 
+	* @Title: logoutAccount 
+	* @Date:2017年9月14日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 退出登录
+	*/
+	public static void logoutAccount(){
+		HomePage.clickAavtar();
+		HomePage.clickLogout();
+		getDriver().manage().deleteAllCookies();
+	}
 }
