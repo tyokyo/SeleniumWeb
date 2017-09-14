@@ -5,7 +5,7 @@ import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.TestListenerAdapter;
 import org.uncommons.reportng.Reporters;
-import model.VP;
+import util.TakeScreen;
 
 public class TestngListener extends TestListenerAdapter {
 	private static String SEPERATE="/";
@@ -13,7 +13,8 @@ public class TestngListener extends TestListenerAdapter {
 	public void onTestFailure(ITestResult tr) {
 		super.onTestFailure(tr);
 		Reporters.logDebug(true,tr.getTestClass().getName()+SEPERATE+tr.getMethod().getMethodName());
-		VP.takeScreenShot(tr);
+		TakeScreen.takeScreenShotWithDraw("FAIL");
+		//VP.takeScreenShot(tr);
 	}
 
 	@Override

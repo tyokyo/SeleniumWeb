@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -23,7 +22,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.Reporter;
 import org.uncommons.reportng.Reporters;
-
 import run.TestNgXml;
 import util.Log;
 import util.TakeScreen;
@@ -68,6 +66,10 @@ public class VP  extends BaseSelenium{
 		WebElement element = getDriver().findElement(by);
 		highlightElement(element);
 		return element;
+	}
+	public static String getText(WebElement element){
+		Log.info(element.getText()+"");
+		return element.getText();
 	}
 	public static void clickElement(WebElement element){
 		Log.info("Action-click ");
@@ -259,7 +261,7 @@ public class VP  extends BaseSelenium{
 			}
 			Reporter.setCurrentTestResult(tr);
 			//Reporters.logDebug(true,"<img src=../screenshot/" + screenName + " onclick='window.open(\"../screenshot/"+screenName+"\")' height='50' width='50'/>");
-			Reporters.logDebug(true,("<img src=../screenshot/" + screenName + " onmousewheel=\"return bbimg(this)\""+ " onclick='window.open(\"../screenshot/"+screenName + "\")\' height='50' width='50'/>"));
+			Reporters.logDebug(true,("<img src=../screenshot/" + screenName + " onmousewheel=\"return bbimg(this)\""+ " onclick='window.open(\"../screenshot/"+screenName + "\")\'/>"));
 		}else {
 			Reporters.logDebug(true,"getDriver() is NULL, screenshot Skipped");
 		}
