@@ -12,6 +12,13 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import util.Log;
 import util.ParameterBean;
 import org.apache.log4j.PropertyConfigurator; 
+/** 
+* @ClassName: BaseSelenium 
+* @Description: TODO(这里用一句话描述这个类的作用) 
+* @author qiang.zhang@ck-telecom.com
+* @date 2017年9月14日 下午2:52:37 
+*  
+*/
 public class BaseSelenium {
 	private static  WebDriver driver;
 	private static  ParameterBean  bean;;
@@ -28,12 +35,12 @@ public class BaseSelenium {
 	* @author qiang.zhang@ck-telecom.com
 	* @Description: 启动被测页面
 	*/
-	public static void startSioeye(){
+	public static void launchUrl(String url){
 		String browser = getBean().getBrowser();
 		Log.info("start browser-"+browser);
 		switch (browser.toUpperCase()) {
 		case "FIREFOX":
-			initFireFoxDriver();
+			initFireFoxDriver(url);
 			break;
 		case "CHROME":
 			initChromeDriver();
@@ -46,6 +53,9 @@ public class BaseSelenium {
 			break;
 		}
 	}
+	public static void startSioeye(){
+		launchUrl("https://live.sioeye.cn/");
+	}
 	/**
 	 * 初始化driver 参数
 	 */
@@ -56,7 +66,7 @@ public class BaseSelenium {
 		bean.setUsername(username);
 		bean.setPassword(password);
 	}
-	private static void initFireFoxDriver(){
+	private static void initFireFoxDriver(String url){
 		VP.killProcess("firefox");
 		Log.info("init firefox browser");
 		String driver_path = System.getProperty("user.dir")+"\\driver\\firefox\\64\\geckodriver.exe";
@@ -69,7 +79,7 @@ public class BaseSelenium {
 		driver=new FirefoxDriver(capabilities);
 		//最大化窗口  
 		//driver.manage().window().maximize();  
-		startTestAddress("https://live.sioeye.cn/");
+		startTestAddress(url);
 	}
 	public static void startTestAddress(String url){
 		//driver.manage().window().maximize();  
@@ -144,5 +154,19 @@ public class BaseSelenium {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+	}
+	
+	/** 
+	* @Title: restart 
+	* @Date:2017年9月14日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 关闭并退出浏览器,清除Cookies，再启动测试页面
+	*/
+	public static void restart(){
+		String url = driver.getCurrentUrl();
+		driver.manage().deleteAllCookies();
+		driver.close();
+		driver.quit();
+		launchUrl(url);
 	}
 }
