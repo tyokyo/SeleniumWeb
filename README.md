@@ -1,4 +1,4 @@
-Test for jianBin
+delete
 
 "# SeleniumWeb" 
 firefox 版本号 大于 48
