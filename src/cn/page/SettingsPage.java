@@ -18,7 +18,7 @@ import util.Log;
 public class SettingsPage  extends VP{
 	//Sioeye喜爱直播设置页面_个人资料
 	//昵称
-	static By nickname = By.id("nickname");
+	public static By nickname = By.id("nickname");
 	//性别：男
 	static By female = By.id("female");
 	//性别：女
@@ -152,6 +152,17 @@ public class SettingsPage  extends VP{
 	*/
 	public static void inputNickname (String keys){
 		sendKeys(nickname , keys);
+	}	
+	
+	/** 
+	* @Title: clickSavePersonalProfile 
+	* @Date:2017年9月14日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 个人资料-保存
+	*/
+	public static void clickSavePersonalProfile (){
+		clickElement(save_personal);
+		wait(10);
 	}	
 	
 	/** 

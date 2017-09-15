@@ -22,7 +22,10 @@ public class Log {
 	    Reporter.log(getPrefix()+String.format(message, args)+"<br>");
 	}
 	public static void info(String message, Object... args) {
-		String messages =getPrefix()+String.format(message, args);
+		String messages =getPrefix()+message;
+		for (Object object : args) {
+			messages = messages+"["+object.toString()+"]";
+		}
 		logger.info(messages);
 		//System.out.println(getPrefix() + String.format(message, args));
 		Reporter.log(messages+"<br>");
