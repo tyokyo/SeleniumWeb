@@ -47,6 +47,7 @@ public class PersonalProfileCase  extends VP{
 		SettingsPage.inputNickname(expectNickName);
 		SettingsPage.clickSavePersonalProfile();
 		
+		//重新打开网页
 		restart();
 		
 		AccountPage.loginAccount();
