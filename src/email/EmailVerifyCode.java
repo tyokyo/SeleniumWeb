@@ -10,6 +10,9 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.mail.Address;
 import javax.mail.BodyPart;
 import javax.mail.Flags;
@@ -25,57 +28,87 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
 
+import model.VP;
+import util.Property;
+
 /**
  * 使用POP3协议接收邮件
  */
-public class POP3ReceiveMailTest {
-	
+public class EmailVerifyCode extends VP{
+
 	public static void main(String[] args) throws Exception {
-		receive();
+		getCode();
 	}
-	
-	/**
-	 * 接收邮件
-	 */
-	public static void receive() throws Exception {
+	public static String getCode() throws Exception {
+		String code =null;
 		// 准备连接服务器的会话信息
 		Properties props = new Properties();
 		props.setProperty("mail.store.protocol", "pop3");		// 协议
 		props.setProperty("mail.pop3.port", "110");				// 端口
-		props.setProperty("mail.pop3.host", "pop.126.com");	// pop3服务器
-		//props.setProperty("mail.pop3.host", "pop.163.com");	// pop3服务器
-		
+		//props.setProperty("mail.pop3.host", "pop.126.com");	// pop3服务器
+		props.setProperty("mail.pop3.host", "pop3.163.com");	// pop3服务器
+
 		// 创建Session实例对象
 		Session session = Session.getInstance(props);
 		Store store = session.getStore("pop3");
-		//store.connect("zhangqiang502502@163.com", "*********");
-		store.connect("sioeye007@126.com", "sioeye008");
+		//store.connect("zhangqiang502502@163.com", "**************");
+		String username = Property.getValueByKey(accountPath, "email_code_username");
+		String password = Property.getValueByKey(accountPath, "email_code_password");
+		store.connect(username, password);
+		//store.connect("tyokyo@126.com", "**********");
 		// 获得收件箱
 		Folder folder = store.getFolder("INBOX");
 		/* Folder.READ_ONLY：只读权限
 		 * Folder.READ_WRITE：可读可写（可以修改邮件的状态）
 		 */
 		folder.open(Folder.READ_WRITE);	//打开收件箱
-		
+
 		// 由于POP3协议无法获知邮件的状态,所以getUnreadMessageCount得到的是收件箱的邮件总数
 		System.out.println("未读邮件数: " + folder.getUnreadMessageCount());
-		
+
 		// 由于POP3协议无法获知邮件的状态,所以下面得到的结果始终都是为0
 		System.out.println("删除邮件数: " + folder.getDeletedMessageCount());
 		System.out.println("新邮件: " + folder.getNewMessageCount());
-		
+
 		// 获得收件箱中的邮件总数
 		System.out.println("邮件总数: " + folder.getMessageCount());
-		
+
 		// 得到收件箱中的所有邮件,并解析
 		Message[] messages = folder.getMessages();
-		parseMessage(messages);
-		
+		code = parseMessageAndGetEmailVerifyCode(messages);
+
 		//释放资源
 		folder.close(true);
 		store.close();
+		
+		return code ; 
 	}
-	
+	public static String  parseMessageAndGetEmailVerifyCode(Message ...messages) throws MessagingException, IOException {
+		String code = null;
+		if (messages == null || messages.length < 1) 
+			throw new MessagingException("未找到要解析的邮件!");
+
+		// 解析所有邮件
+		for (int i = 0, count = messages.length; i < count; i++) {
+			MimeMessage msg = (MimeMessage) messages[i];
+			System.out.println("------------------解析第" + msg.getMessageNumber() + "封邮件-------------------- ");
+			if ("Sioeye <no-reply@sioeye.com>".equals(getFrom(msg))) {
+				if (getSubject(msg).contains("Sioeye邮箱重置")) {
+					StringBuffer content = new StringBuffer(30);
+					getMailTextContent(msg, content);
+					String contentString =content.length() > 100 ? content.substring(0,100) + "..." : content.toString();
+					Pattern pattern =Pattern.compile("您的邮箱验证码是：(.+?)，");
+					Matcher matcher=pattern.matcher(contentString);
+					while(matcher.find())
+					{
+						code = matcher.group(1);
+					}
+				}
+			}
+		}
+		System.out.println("CODE=["+code+"]");
+		return code ; 
+	}
 	/**
 	 * 解析邮件
 	 * @param messages 要解析的邮件列表
@@ -83,7 +116,7 @@ public class POP3ReceiveMailTest {
 	public static void parseMessage(Message ...messages) throws MessagingException, IOException {
 		if (messages == null || messages.length < 1) 
 			throw new MessagingException("未找到要解析的邮件!");
-		
+
 		// 解析所有邮件
 		for (int i = 0, count = messages.length; i < count; i++) {
 			MimeMessage msg = (MimeMessage) messages[i];
@@ -99,7 +132,7 @@ public class POP3ReceiveMailTest {
 			boolean isContainerAttachment = isContainAttachment(msg);
 			System.out.println("是否包含附件：" + isContainerAttachment);
 			if (isContainerAttachment) {
-				saveAttachment(msg, "c:\\mailtmp\\"+msg.getSubject() + "_"); //保存附件
+				//saveAttachment(msg, "c:\\mailtmp\\"+msg.getSubject() + "_"); //保存附件
 			} 
 			StringBuffer content = new StringBuffer(30);
 			getMailTextContent(msg, content);
@@ -108,16 +141,16 @@ public class POP3ReceiveMailTest {
 			System.out.println();
 		}
 	}
-	
+
 	/**
 	 * 获得邮件主题
 	 * @param msg 邮件内容
 	 * @return 解码后的邮件主题
 	 */
 	public static String getSubject(MimeMessage msg) throws UnsupportedEncodingException, MessagingException {
-		return MimeUtility.decodeText(msg.getSubject());
+		return MimeUtility.decodeText(msg.getSubject()==null?"":msg.getSubject());
 	}
-	
+
 	/**
 	 * 获得邮件发件人
 	 * @param msg 邮件内容
@@ -130,7 +163,7 @@ public class POP3ReceiveMailTest {
 		Address[] froms = msg.getFrom();
 		if (froms.length < 1)
 			throw new MessagingException("没有发件人!");
-		
+
 		InternetAddress address = (InternetAddress) froms[0];
 		String person = address.getPersonal();
 		if (person != null) {
@@ -139,10 +172,10 @@ public class POP3ReceiveMailTest {
 			person = "";
 		}
 		from = person + "<" + address.getAddress() + ">";
-		
+
 		return from;
 	}
-	
+
 	/**
 	 * 根据收件人类型，获取邮件收件人、抄送和密送地址。如果收件人类型为空，则获得所有的收件人
 	 * <p>Message.RecipientType.TO  收件人</p>
@@ -161,19 +194,19 @@ public class POP3ReceiveMailTest {
 		} else {
 			addresss = msg.getRecipients(type);
 		}
-		
+
 		if (addresss == null || addresss.length < 1)
 			throw new MessagingException("没有收件人!");
 		for (Address address : addresss) {
 			InternetAddress internetAddress = (InternetAddress)address;
 			receiveAddress.append(internetAddress.toUnicodeString()).append(",");
 		}
-		
+
 		receiveAddress.deleteCharAt(receiveAddress.length()-1);	//删除最后一个逗号
-		
+
 		return receiveAddress.toString();
 	}
-	
+
 	/**
 	 * 获得邮件发送时间
 	 * @param msg 邮件内容
@@ -184,13 +217,13 @@ public class POP3ReceiveMailTest {
 		Date receivedDate = msg.getSentDate();
 		if (receivedDate == null)
 			return "";
-		
+
 		if (pattern == null || "".equals(pattern))
 			pattern = "yyyy年MM月dd日 E HH:mm ";
-		
+
 		return new SimpleDateFormat(pattern).format(receivedDate);
 	}
-	
+
 	/**
 	 * 判断邮件中是否包含附件
 	 * @param msg 邮件内容
@@ -215,12 +248,12 @@ public class POP3ReceiveMailTest {
 					if (contentType.indexOf("application") != -1) {
 						flag = true;
 					}  
-					
+
 					if (contentType.indexOf("name") != -1) {
 						flag = true;
 					} 
 				}
-				
+
 				if (flag) break;
 			}
 		} else if (part.isMimeType("message/rfc822")) {
@@ -228,7 +261,7 @@ public class POP3ReceiveMailTest {
 		}
 		return flag;
 	}
-	
+
 	/**
 	 * 判断邮件是否已读
 	 * @param msg 邮件内容
@@ -238,7 +271,7 @@ public class POP3ReceiveMailTest {
 	public static boolean isSeen(MimeMessage msg) throws MessagingException {
 		return msg.getFlags().contains(Flags.Flag.SEEN);
 	}
-	
+
 	/**
 	 * 判断邮件是否需要阅读回执
 	 * @param msg 邮件内容
@@ -252,7 +285,7 @@ public class POP3ReceiveMailTest {
 			replySign = true;
 		return replySign;
 	}
-	
+
 	/**
 	 * 获得邮件的优先级
 	 * @param msg 邮件内容
@@ -273,7 +306,7 @@ public class POP3ReceiveMailTest {
 		}
 		return priority;
 	} 
-	
+
 	/**
 	 * 获得邮件文本内容
 	 * @param part 邮件体
@@ -297,7 +330,7 @@ public class POP3ReceiveMailTest {
 			}
 		}
 	}
-	
+
 	/**
 	 * 保存附件
 	 * @param part 邮件中多个组合体中的其中一个组合体
@@ -308,7 +341,7 @@ public class POP3ReceiveMailTest {
 	 * @throws IOException
 	 */
 	public static void saveAttachment(Part part, String destDir) throws UnsupportedEncodingException, MessagingException,
-			FileNotFoundException, IOException {
+	FileNotFoundException, IOException {
 		if (part.isMimeType("multipart/*")) {
 			Multipart multipart = (Multipart) part.getContent();	//复杂体邮件
 			//复杂体邮件包含多个邮件体
@@ -334,7 +367,7 @@ public class POP3ReceiveMailTest {
 			saveAttachment((Part) part.getContent(),destDir);
 		}
 	}
-	
+
 	/**
 	 * 读取输入流中的数据保存至指定目录
 	 * @param is 输入流
@@ -356,7 +389,7 @@ public class POP3ReceiveMailTest {
 		bos.close();
 		bis.close();
 	}
-	
+
 	/**
 	 * 文本解码
 	 * @param encodeText 解码MimeUtility.encodeText(String text)方法编码后的文本
