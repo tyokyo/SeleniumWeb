@@ -14,6 +14,7 @@ import model.VP;
 import model.WaitCondition;
 
 /** 
+ * https://live.sioeye.cn/settings#info
 * @ClassName: PersonalProfileCase 
 * @Description: 个人资料
 * @author qiang.zhang@ck-telecom.com
