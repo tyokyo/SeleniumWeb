@@ -1,4 +1,4 @@
-Test for pull requst
+验证场景一，Forker修改代码，并且往Owner发送修改请求
 
 "# SeleniumWeb" 
 firefox 版本号 大于 48
