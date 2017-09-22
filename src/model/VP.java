@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -67,6 +68,20 @@ public class VP  extends BaseSelenium{
 		WebElement element = getDriver().findElement(by);
 		highlightElement(element);
 		return element;
+	}
+
+	/** 
+	* @Title: getElements 
+	* @Date:2017年9月19日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 获取对象列表
+	* @param by
+	* @return List<WebElement>
+	*/
+	public static List<WebElement> getElements(By by){
+		Log.info(String.format("find elements by=%s", by.toString()));
+		List<WebElement> elements = getDriver().findElements(by);
+		return elements;
 	}
 	public static String getText(WebElement element){
 		Log.info(element.getText()+"");
@@ -454,5 +469,17 @@ public class VP  extends BaseSelenium{
 		} catch (Exception e) {
 			return false;
 		}
+	}
+	public static boolean hasAttribute(WebElement webElement,String attributename){
+		boolean has = false;
+		try {
+			WebDriverWait wait = new WebDriverWait(getDriver(), 5);
+			wait.until(ExpectedConditions.attributeToBeNotEmpty(webElement, attributename));
+			has=true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			
+		}
+		return has;
 	}
 }
