@@ -46,4 +46,9 @@ public class WaitCondition extends VP {
 		WebDriverWait wait = new WebDriverWait(getDriver(), timeOutInSeconds);
 		wait.until(ExpectedConditions.not(ExpectedConditions.alertIsPresent()));
 	}
+	public static void waitInvisibilityOfElementLocated(By locator ,int timeOutInSeconds){
+		WebDriverWait wait = new WebDriverWait(getDriver(), timeOutInSeconds);
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
+	}
+	
 }
