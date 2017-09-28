@@ -3,6 +3,7 @@ package cn.page.setting;
 import model.VP;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import cn.page.AccountPage;
 import cn.page.HomePage;
@@ -10,7 +11,7 @@ import cn.page.HomePage;
 public class MyAccountPage  extends VP{
 	//Sioeye喜爱直播设置页面_我的账号
 	//SioeyeID
-	static By  sioeyeid = By.xpath("/html/body/div[2]/div/div[2]/div[2]/div[1]/div/input");
+	static By  sioeyeid = By.cssSelector(".me-input>input");
 	//绑定手机号
 	static By bind_phone = By.id("btn-bind-phone");
 	//绑定邮箱
@@ -32,5 +33,7 @@ public class MyAccountPage  extends VP{
 		HomePage.clickSetting();
 		NavToSetting.navToEditInfo("我的账号");
 	}
-	
+	public static WebElement getSioeyeID(){
+		return getElement(sioeyeid);
+	}
 }

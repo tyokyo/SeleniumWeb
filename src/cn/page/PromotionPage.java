@@ -16,7 +16,7 @@ public class PromotionPage extends VP{
 	//主播头像
 	static By Anchor_avatar = By.xpath("//*[@id='promotion-wrap']/div/div[1]/div[1]/a/img");	
 	//关注或取消按钮
-	static By follow = By.xpath("//*[@id='promotion-wrap']/div/div[1]/div[2]");
+	static By follow = By.cssSelector("#promotion-wrap .btn-follow");
 	//举报别人的视频
 	static By report = By.xpath("//*[@id='promotion-wrap']/div/div[2]/div[3]/div[2]/div[1]");
 	//点赞别人的视频

@@ -1,16 +1,19 @@
 package cn.testcase;
+import java.util.List;
 import java.util.Set;
 
-import org.openqa.selenium.Cookie;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Parameters;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import cn.data.TestDataProvider;
 import cn.page.AccountPage;
-import cn.page.HomePage;
+import cn.page.PromotionPage;
 import model.VP;
-import util.Log;
+import model.WaitCondition;
 import util.TakeScreen;
 
 /** 
@@ -21,39 +24,71 @@ import util.TakeScreen;
  *  
  */
 public class HomePageCase  extends VP{
-	@BeforeTest
-	@Parameters({"browser","username","password"})
-	public void beforeTest(String browser,String username,String password){
+
+	@BeforeMethod
+	public void BeforeMethod(){
+		initialize("chrome","tyokyo@126.com","1234567890");
+		startSioeye();		
+	}
+	/*
+	 * @Parameters({"browser","username","password"})
+	 * public void beforeTest(String browser,String username,String password){
 		initialize(browser,username,password);
 		startSioeye();
-	}
+	}*/
 
-	public void testHome(){
-		TakeScreen.takeScreenShotWithDraw("好味道alcatel");
-		HomePage.clickLoginbtn();
-	}
-	@Test
-	public void testLogin(){
-		Set<Cookie> cookies=getDriver().manage().getCookies();
-		System.out.println("cookie总数为"+cookies.size());
-		for(Cookie cookie:cookies){
-			Log.info("作用域："+cookie.getDomain()+", 名称："+cookie.getName()+
-					", 值："+cookie.getValue()+", 范围："+cookie.getPath()+
-					", 过期时间"+cookie.getExpiry());
-			getDriver().manage().deleteCookie(cookie);
+	/** 
+	 * @Title: testPlayWonderfulLive 
+	 * @Date:2017年9月26日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 视频观看-播放第一个视频
+	 */
+	@Test(description="播放视频",dataProvider="offlinevideo",dataProviderClass=TestDataProvider.class)
+	public void testWatchVideo(String videoDomain){
+		List<WebElement> divs = getDriver().findElements(By.cssSelector(".live-box>div"));
+		for (WebElement webElement : divs) {
+			List<WebElement> spans = webElement.findElement(By.className("live-type")).findElements(By.tagName("span"));
+			for (WebElement webElement2 : spans) {
+				String domain = webElement2.getText();
+				if (videoDomain.equals(domain)) {
+					webElement.findElements(By.cssSelector(".live-video>a")).get(0).click();
+					WaitCondition.waitInvisibilityOfElementLocated(By.tagName("video"), 60);
+					TakeScreen.takeScreenShotWithDraw(domain);
+					break;
+				}
+			}
 		}
-		wait(3);
-		TakeScreen.takeScreenShotWithDraw("好味道alcatel");
-		HomePage.clickLoginbtn();
-		AccountPage.loginAccount();
-		TakeScreen.takeScreenShotWithDraw("Login success");
-		TakeScreen.takeScreenShotWithDraw("wechat");
-		clickByCssSelector("[class='btn-login avatar log-on']");
-		clickByLinkText("个人主页");
-		clickByClassName("icon-download");
-		wait(20);
 	}
-	@AfterTest
+	@Test(description="播放视频+Follow",dataProvider="offlinevideo",dataProviderClass=TestDataProvider.class)
+	public void testWatchVideoThenFollow(String videoDomain){
+		Set<String> oldhandles = getDriver().getWindowHandles();
+		List<WebElement> divs = getDriver().findElements(By.cssSelector(".live-box>div"));
+		boolean find = false;
+		for (WebElement webElement : divs) {
+			if (find) {
+				break;
+			}
+			List<WebElement> spans = webElement.findElement(By.className("live-type")).findElements(By.tagName("span"));
+			for (WebElement webElement2 : spans) {
+				String domain = webElement2.getText();
+				if (videoDomain.equals(domain)) {
+					webElement.findElements(By.cssSelector(".live-video>a")).get(0).click();
+					WaitCondition.waitInvisibilityOfElementLocated(By.tagName("video"), 60);
+					Set<String> newhandles = getDriver().getWindowHandles();
+					newhandles.removeAll(oldhandles);
+					setDriver(getDriver().switchTo().window(newhandles.iterator().next()));
+					TakeScreen.takeScreenShotWithDraw(domain);
+					PromotionPage.clickFollow();
+					WaitCondition.waitElementToBeClickable(AccountPage.username, 60);
+					TakeScreen.takeScreenShotWithDraw("account_page");
+					find=true;
+					Assert.assertEquals(isElementExist(AccountPage.password,5), true,"login page");
+					break;
+				}
+			}
+		}
+	}
+	@AfterMethod
 	public void afterTest(){
 		quiteSelenium();
 	}

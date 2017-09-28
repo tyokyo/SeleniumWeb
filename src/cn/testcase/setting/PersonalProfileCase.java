@@ -50,92 +50,114 @@ public class PersonalProfileCase  extends VP{
 	 */
 	@Test(description="昵称修改",dataProvider="nickname",dataProviderClass=TestDataProvider.class)
 	public void testModifyNickName(String nickname){
-		AccountPage.loginAccount();
-		HomePage.clickAavtar();
-		HomePage.clickSetting();
+		PersonalProfilePage.navToInfo();
+		
 		PersonalProfilePage.clearNickname();
 		String expectNickName = nickname;
 		PersonalProfilePage.inputNickname(expectNickName);
 		PersonalProfilePage.clickSavePersonalProfile();
 
-		NavToSetting.navToEditInfo("串码流");
-		NavToSetting.navToEditInfo("个人资料");
+		//刷新页面验证
+		getDriver().navigate().refresh();
 
 		WaitCondition.waitTextToBePresentInElementValue(PersonalProfilePage.nickname, expectNickName, 20);
 		String actual = PersonalProfilePage.getNicknameElement().getAttribute("value");
 		Assert.assertEquals(actual, expectNickName,"nickname");
 	}
+	/** 
+	* @Title: testSexSetting 
+	* @Date:2017年9月28日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 修改性别
+	* @param sex void
+	*/
 	@Test(description="性别设置",dataProvider="sex",dataProviderClass=TestDataProvider.class)
 	public void testSexSetting(String sex){
-		AccountPage.loginAccount();
-		HomePage.clickAavtar();
-		HomePage.clickSetting();
+		PersonalProfilePage.navToInfo();
 
 		PersonalProfilePage.chooseSex(sex);
 		PersonalProfilePage.clickSavePersonalProfile();
 
-		NavToSetting.navToEditInfo("串码流");
-		NavToSetting.navToEditInfo("个人资料");
+		//刷新页面验证
+		getDriver().navigate().refresh();
 
 		String active = PersonalProfilePage.getSexStatus();
 		Assert.assertEquals(active, sex,sex);
 	}
+	/** 
+	* @Title: testLocation 
+	* @Date:2017年9月28日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 修改位置
+	*/
 	@Test
 	public void testLocation(){
-		AccountPage.loginAccount();
-		HomePage.clickAavtar();
-		HomePage.clickSetting();
+		PersonalProfilePage.navToInfo();
+		
 		PersonalProfilePage.inputArea("四川-宜宾");
 		PersonalProfilePage.clickSavePersonalProfile();
 
-		NavToSetting.navToEditInfo("串码流");
-		NavToSetting.navToEditInfo("个人资料");
+		//刷新页面验证
+		getDriver().navigate().refresh();
 
 		String actual = PersonalProfilePage.getAreaElement().getAttribute("value");
 		Assert.assertEquals(actual, "四川-宜宾", "修改位置");
 	}
+	/** 
+	* @Title: testPersonalizedSignature 
+	* @Date:2017年9月28日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 修改个性签名 
+	* @param value void
+	*/
 	@Test(description="个性签名",dataProvider="motoo",dataProviderClass=TestDataProvider.class)
 	public void testPersonalizedSignature(String value){
-		AccountPage.loginAccount();
-		HomePage.clickAavtar();
-		HomePage.clickSetting();
+		PersonalProfilePage.navToInfo();
+		
 		String expect = value;
 		PersonalProfilePage.inputMotto(expect);;
 		PersonalProfilePage.clickSavePersonalProfile();
 
-		NavToSetting.navToEditInfo("串码流");
-		NavToSetting.navToEditInfo("个人资料");
+		//刷新页面验证
+		getDriver().navigate().refresh();
 
 		String actual = PersonalProfilePage.getMottoElement().getAttribute("value");
 		Assert.assertEquals(actual, expect, "motto");
 
 	}
+	/** 
+	* @Title: testAddCustomHobby 
+	* @Date:2017年9月28日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 添加自定义爱好
+	*/
 	@Test
 	public void testAddCustomHobby(){
-		AccountPage.loginAccount();
-		HomePage.clickAavtar();
-		HomePage.clickSetting();
+		PersonalProfilePage.navToInfo();
+		
 		String hobby = getRandomString(10);
 		PersonalProfilePage.addHobby(hobby);
 		PersonalProfilePage.clickSavePersonalProfile();
 
-		NavToSetting.navToEditInfo("串码流");
-		NavToSetting.navToEditInfo("个人资料");
-
-		boolean addSuccess = PersonalProfilePage.getAllHobbys().contains(hobby);
+		//当前页面验证
+		boolean addSuccess = PersonalProfilePage.getAllHobbys().containsKey(hobby);
+		Assert.assertEquals(addSuccess, true,"add custom hobby success");
+		
+		//刷新页面验证
+		getDriver().navigate().refresh();
+		addSuccess = PersonalProfilePage.getAllHobbys().containsKey(hobby);
 		Assert.assertEquals(addSuccess, true,"add custom hobby success");
 	}
 
 	@Test(description="添加删除所有爱好",dataProvider="allHobby",dataProviderClass=TestDataProvider.class)
 	public void testAddDelAllHobby(boolean all){
-		AccountPage.loginAccount();
-		HomePage.clickAavtar();
-		HomePage.clickSetting();
+		PersonalProfilePage.navToInfo();
+		
 		PersonalProfilePage.hobbyAllSelected(all);
 		PersonalProfilePage.clickSavePersonalProfile();
 
-		NavToSetting.navToEditInfo("串码流");
-		NavToSetting.navToEditInfo("个人资料");
+		//刷新页面验证
+		getDriver().navigate().refresh();
 
 		Hashtable<String, Boolean> hobbys = PersonalProfilePage.getAllHobbys();
 		Set<String> ahobbysnames= hobbys.keySet();
@@ -144,25 +166,26 @@ public class PersonalProfileCase  extends VP{
 			Assert.assertEquals(actual, all,hobby+" check selected");
 		}
 	}
+	
 	@Test
 	public void testAddRecommandHobby(){
-		AccountPage.loginAccount();
-		HomePage.clickAavtar();
-		HomePage.clickSetting();
+		PersonalProfilePage.navToInfo();
+		//选择全部爱好
 		PersonalProfilePage.hobbyAllSelected(true);
 		PersonalProfilePage.clickSavePersonalProfile();
 		Hashtable<String, Boolean> hobbymap= PersonalProfilePage.getAllHobbys();
 
 		Set<String> hobbysnames= hobbymap.keySet();
-		String hobbyFirstName = hobbysnames.toArray()[0].toString();
+		String hobbyFirstName = hobbysnames.iterator().next();
+		//第一个设置为未选中
 		Log.info("hobbyFirstName-"+hobbyFirstName);
 		PersonalProfilePage.hobbySetting(hobbyFirstName, false);
 		PersonalProfilePage.clickSavePersonalProfile();
 
+		//刷新页面验证
+		getDriver().navigate().refresh();
 
-		NavToSetting.navToEditInfo("串码流");
-		NavToSetting.navToEditInfo("个人资料");
-
+		//验证
 		Hashtable<String, Boolean> hobbys = PersonalProfilePage.getAllHobbys();
 		Set<String> ahobbysnames= hobbys.keySet();
 		for (String hobby : ahobbysnames) {

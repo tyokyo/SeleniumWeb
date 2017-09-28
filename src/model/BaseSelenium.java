@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
@@ -9,8 +10,10 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.os.WindowsUtils;
 import org.openqa.selenium.remote.DesiredCapabilities;
+
 import util.Log;
 import util.ParameterBean;
+
 import org.apache.log4j.PropertyConfigurator; 
 /** 
 * @ClassName: BaseSelenium 
@@ -27,6 +30,9 @@ public class BaseSelenium {
 	}
 	public static WebDriver getDriver() {
 		return driver;
+	}
+	public static void setDriver(WebDriver driver) {
+		BaseSelenium.driver=driver;
 	}
 	
 	/** 
@@ -86,8 +92,12 @@ public class BaseSelenium {
 		driver.manage().deleteCookieNamed("JSESSIONID");
 		driver.get(url);
 		driver.manage().deleteAllCookies();
-		//设置10秒
+		//# 定位对象时给3s的时间 # 如果3s内还定位不到则抛出异常 
 		driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+		//# 页面加载超时时间设置为5s 
+		driver.manage().timeouts().pageLoadTimeout(50, TimeUnit.SECONDS); 
+		//# 异步脚本的超时时间设置成3s 
+		driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
 	}
 	/** 
 	 * @Title: initChromeDriver 
@@ -147,6 +157,11 @@ public class BaseSelenium {
 		try {
 			Log.info("quit  browser");
 			driver.manage().deleteAllCookies();
+			//关闭所有的窗口
+			Set<String> handles = getDriver().getWindowHandles();
+			for (String h : handles) {
+				getDriver().switchTo().window(h).close();;
+			}
 			driver.close();
 			driver.quit();
 			WindowsUtils.killByName("chromedriver.exe");

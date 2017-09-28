@@ -110,7 +110,7 @@ public class WatchPage extends VP{
 	 * @return: void
 	 * @author: jianbin.zhong
 	 */
-	public void clickWatch(){
+	public static void clickWatch(){
 		getElement(follow).click();
 	}
 	
@@ -134,7 +134,7 @@ public class WatchPage extends VP{
 	 * @return: void
 	 * @author: jianbin.zhong
 	 */
-	public void clickNoification(){
+	public static void clickNoification(){
 		getElement(notifications);
 	}
 	
@@ -158,7 +158,7 @@ public class WatchPage extends VP{
 	 * @return: void
 	 * @author: jianbin.zhong
 	 */
-	public void clickSearch(){
+	public static void clickSearch(){
 		getElement(search).click();
 	}
 	
@@ -182,7 +182,7 @@ public class WatchPage extends VP{
 	 * @return: void
 	 * @author: jianbin.zhong
 	 */
-	public void clickLoginSelfPage(){
+	public static void clickLoginSelfPage(){
 		getElement(loginSelfPage).click();
 	}
 	
@@ -206,7 +206,7 @@ public class WatchPage extends VP{
 	 * @return: void
 	 * @author: jianbin.zhong
 	 */
-	public void clickLoginOut(){
+	public static  void clickLoginOut(){
 		getElement(loginLogOut);
 	}
 	
@@ -219,7 +219,7 @@ public class WatchPage extends VP{
 	 * @return: void
 	 * @author: jianbin.zhong
 	 */
-	public void clickUserAvatar(){
+	public static void clickUserAvatar(){
 		getElement(userAvatar).click();
 	}
 	
@@ -231,7 +231,7 @@ public class WatchPage extends VP{
 	 * @return: void
 	 * @author: jianbin.zhong
 	 */
-	public void clickUserNickname(){
+	public static void clickUserNickname(){
 		getElement(userNickname).click();
 	}
 	
@@ -243,7 +243,7 @@ public class WatchPage extends VP{
 	 * @return: void
 	 * @author: jianbin.zhong
 	 */
-	public void getUserNicknameValue(){
+	public static void getUserNicknameValue(){
 		getElement(userNickname).getText();
 	}
 	
@@ -267,7 +267,7 @@ public class WatchPage extends VP{
 	 * @return: void
 	 * @author: jianbin.zhong
 	 */
-	public void getUserSioeyeIDIconTxt(){
+	public static void getUserSioeyeIDIconTxt(){
 		getElement(userSioeyeIDIcon).getText();
 	}
 	
@@ -279,7 +279,7 @@ public class WatchPage extends VP{
 	 * @return: void
 	 * @author: jianbin.zhong
 	 */
-	public void getUserSioeyeIDValue(){
+	public static void getUserSioeyeIDValue(){
 		getElement(userSioeyeIDValue).getText();
 	}
 	

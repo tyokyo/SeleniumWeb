@@ -65,5 +65,16 @@ public class TestDataProvider extends VP{
 		};  
 		return obj;
 	}
+	@DataProvider()
+	public static Object[][] offlinevideo(Method method) {
+		obj= new Object[][] { 
+				{"精彩"}, 
+				{"运动"},
+				{"赛事"}, 
+				{"会议"}, 
+				{"最近"}
+		};  
+		return obj;
+	}
 	
 }

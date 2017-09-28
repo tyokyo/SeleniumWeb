@@ -2,7 +2,7 @@ package cn.page;
 
 import model.VP;
 import org.openqa.selenium.By;
-//https://live.sioeye.cn/watch
+//https://live.sioeye.cn/watch  -  账号未登录时候
 public class HomePage  extends VP{
 	//Sioeye喜爱直播相机官网
 	static By logo = By.className("ttbar-login");

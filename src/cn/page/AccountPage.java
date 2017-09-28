@@ -183,8 +183,8 @@ public class AccountPage extends VP{
 	* @Description: 退出登录
 	*/
 	public static void logoutAccount(){
-		HomePage.clickAavtar();
-		HomePage.clickLogout();
+		WatchPage.clickAvatar();
+		WatchPage.clickLoginOut();
 		getDriver().manage().deleteAllCookies();
 	}
 }
