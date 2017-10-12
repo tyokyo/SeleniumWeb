@@ -66,7 +66,7 @@ public class VP  extends BaseSelenium{
 	public static WebElement getElement(By by){
 		Log.info(String.format("find element by=%s", by.toString()));
 		WebElement element = getDriver().findElement(by);
-		highlightElement(element);
+		//highlightElement(element);
 		return element;
 	}
 
@@ -481,5 +481,30 @@ public class VP  extends BaseSelenium{
 			
 		}
 		return has;
+	}
+	public static boolean waitFileDownload(String fileName,int time){
+		boolean result = false;
+		String path ="C:\\Users\\DELL\\Downloads\\";
+		boolean finished = false;
+		for (int i = 0; i < time; i++) {
+			if (new File(path+fileName).exists()) {
+				finished=true;
+			}
+			if (finished) {
+				Log.info("Download success");
+				result=true;
+				File file = new File(path);
+				File[] files = file.listFiles();
+				for (File file2 : files) {
+					if (file2.getAbsolutePath().endsWith("mp4")) {
+						file2.delete();
+					}
+				}
+				break;
+			}else {
+				wait(2);
+			}
+		}
+		return result;
 	}
 }

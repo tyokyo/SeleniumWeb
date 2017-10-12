@@ -21,17 +21,17 @@ public class WaitCondition extends VP {
 		WebDriverWait wait = new WebDriverWait(getDriver(), timeOutInSeconds);
 		wait.until(ExpectedConditions.titleContains(title));
 	}
-	public static void waitElementToBeClickable(By by,int timeOutInSeconds){
+	public static WebElement waitElementToBeClickable(By by,int timeOutInSeconds){
 		WebDriverWait wait = new WebDriverWait(getDriver(), timeOutInSeconds);
-		wait.until(ExpectedConditions.elementToBeClickable(by));
+		return wait.until(ExpectedConditions.elementToBeClickable(by));
 	}
 	public static void waitElementToBeSelected(WebElement element,int timeOutInSeconds){
 		WebDriverWait wait = new WebDriverWait(getDriver(), timeOutInSeconds);
 		wait.until(ExpectedConditions.elementToBeSelected(element));
 	}
-	public static void waitPresenceOfElementLocated(By by,int timeOutInSeconds){
+	public static WebElement waitPresenceOfElementLocated(By by,int timeOutInSeconds){
 		WebDriverWait wait = new WebDriverWait(getDriver(), timeOutInSeconds);
-		wait.until(ExpectedConditions.presenceOfElementLocated(by));
+		return wait.until(ExpectedConditions.presenceOfElementLocated(by));
 	}
 	public static void waitTextToBePresentInElementValue(By locator,String text,int timeOutInSeconds){
 		Log.info(locator.toString(), "-text="+text,"timeOutInSeconds="+timeOutInSeconds);

@@ -58,6 +58,7 @@ public class BaseSelenium {
 			System.out.println("error browser name");
 			break;
 		}
+		driver.manage().deleteAllCookies();
 	}
 	public static void startSioeye(){
 		launchUrl("https://live.sioeye.cn/");

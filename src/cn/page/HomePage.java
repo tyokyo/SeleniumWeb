@@ -1,7 +1,11 @@
 package cn.page;
 
+import java.util.List;
+
 import model.VP;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 //https://live.sioeye.cn/watch  -  账号未登录时候
 public class HomePage  extends VP{
 	//Sioeye喜爱直播相机官网
@@ -12,8 +16,16 @@ public class HomePage  extends VP{
 	static By follow = By.className("follow");
 	//消息
 	static By notifications = By.className("notifications");
-	//搜索
+	//搜索按钮
 	static By btn_search = By.className("btn-search");
+	//输入搜索内容
+	static By search_input = By.id("search-box-input");
+	//搜索
+	static By btns_search = By.className("btns-search");
+	//搜索视频
+	static By btns_search_video = By.className("resource-video");
+	//搜索用户
+	static By btns_search_user =By.cssSelector("a[class='resource-user active']");
 	//登录
 	static By btn_login = By.cssSelector("a[class='btn-login avatar']");
 	//头像
@@ -73,7 +85,68 @@ public class HomePage  extends VP{
 	public static void clickSearchbtn(){
 		clickElement(btn_search);
 	}
-
+	/** 
+	 * @Title: clickSearchbtn 
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 点击搜索
+	 * @return void    返回类型 
+	 */
+	public static void clickSearchbtns(){
+		clickElement(btns_search);
+	}
+	
+	/** 
+	* @Title: clickSearchvideo 
+	* @Date:2017年10月11日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 搜索视频
+	*/
+	public static void clickSearchvideo(){
+		clickElement(btns_search_video);
+	}
+	
+	/** 
+	* @Title: clickSearchuser 
+	* @Date:2017年10月11日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 搜索用户
+	*/
+	public static void clickSearchuser(){
+		getElement(By.className("resource-btn-box")).findElements(By.tagName("a")).get(1).click();
+	}
+	/** 
+	* @Title: searchInput 
+	* @Date:2017年10月11日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 输入搜索内容
+	* @param content void
+	*/
+	public static void searchInput(String content){
+		sendKeys(search_input, content);
+	}
+	/** 
+	* @Title: searchVideoResult 
+	* @Date:2017年10月11日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 搜索视频结果
+	* @return List<WebElement>
+	*/
+	public static List<WebElement> searchVideoResult(){
+		List<WebElement> resultsElements=getElement(By.className("live-video")).findElements(By.tagName("a"));
+		return resultsElements;
+	}
+	
+	/** 
+	* @Title: searchUserResult 
+	* @Date:2017年10月11日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 搜索用户结果
+	* @return List<WebElement>
+	*/
+	public static List<WebElement> searchUserResult(){
+		List<WebElement> resultsElements= getElement(By.className("search-user-list")).findElements(By.tagName("div"));
+		return resultsElements;
+	}
 	/** 
 	 * @Title: clickLoginbtn 
 	 * @author qiang.zhang@ck-telecom.com
