@@ -2,6 +2,8 @@ package cn.page;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -10,7 +12,6 @@ import util.Log;
 import cn.bean.FollowBean;
 import cn.bean.WatchBean;
 import model.VP;
-import model.WaitCondition;
 
 /**
  * 
@@ -28,6 +29,7 @@ public class WatchPage extends VP{
 	private static By discover = By.className("discover");
 	//关注
 	private static By follow = By.cssSelector("a[class='follow active']");
+	private static By follow1 = By.className("follow");
 	//消息
 	private static By notifications = By.className("notifications");
 	//搜索
@@ -94,7 +96,13 @@ public class WatchPage extends VP{
 	 * @author: jianbin.zhong
 	 */
 	public static void clickWatch(){
-		getElement(follow).click();
+		if (isElementExist(follow,5)) {
+			getElement(follow).click();
+		}
+		//promotion 页面
+		if (isElementExist(follow1,5)) {
+			getElement(follow1).click();
+		}
 	}
 	
 	/**
@@ -148,13 +156,14 @@ public class WatchPage extends VP{
 	}
 	public static void clickUserFollow(){
 		getElement(userFollowValue).click();
+		wait(5);
 	}
 	public static List<FollowBean> getAllFollowInfo(){
 		List<FollowBean> infos = new ArrayList<FollowBean>();
 		WebElement table = getElement(By.cssSelector(".follow-wrapper.radius-box>table"));
 		List<WebElement> follows = table.findElements(By.tagName("tr"));
-		System.out.println(follows.size());
 		for (WebElement webElement : follows) {
+			highlightElement(webElement);
 			FollowBean info = new FollowBean();
 			String follow =webElement.findElement(By.cssSelector(".follow-btn")).getAttribute("data-follow-status");
 			info.setFollow(follow);

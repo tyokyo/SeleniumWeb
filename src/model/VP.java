@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -24,6 +26,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.Reporter;
 import org.uncommons.reportng.Reporters;
+
 import run.TestNgXml;
 import util.Log;
 import util.TakeScreen;
@@ -66,18 +69,18 @@ public class VP  extends BaseSelenium{
 	public static WebElement getElement(By by){
 		Log.info(String.format("find element by=%s", by.toString()));
 		WebElement element = getDriver().findElement(by);
-		//highlightElement(element);
+		highlightElement(element);
 		return element;
 	}
 
 	/** 
-	* @Title: getElements 
-	* @Date:2017年9月19日
-	* @author qiang.zhang@ck-telecom.com
-	* @Description: 获取对象列表
-	* @param by
-	* @return List<WebElement>
-	*/
+	 * @Title: getElements 
+	 * @Date:2017年9月19日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 获取对象列表
+	 * @param by
+	 * @return List<WebElement>
+	 */
 	public static List<WebElement> getElements(By by){
 		Log.info(String.format("find elements by=%s", by.toString()));
 		List<WebElement> elements = getDriver().findElements(by);
@@ -398,6 +401,23 @@ public class VP  extends BaseSelenium{
 			e.printStackTrace();
 		}
 	}
+	/** 
+	 * @Title: highlightElement 
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 高亮显示元素
+	 * @param by    参数 
+	 * @return void    返回类型 
+	 * @throws 
+	 */
+	public static void unHighlightElement(WebElement element) {
+		try {
+			JavascriptExecutor jse = (JavascriptExecutor) getDriver();
+			jse.executeScript("arguments[0].style.border='3px solid white'", element);
+		} catch (Exception e) {
+			TakeScreen.takeScreenShotWithDraw("NotFindBy");
+			e.printStackTrace();
+		}
+	}
 	public static void waitUntilByFind(By by,int seconds){
 		Log.info(String.format("waitUntilFind  %s in  %d seconds",by.toString(),seconds ));
 		try {
@@ -408,6 +428,43 @@ public class VP  extends BaseSelenium{
 			// TODO: handle exception
 			Log.info(by.toString() + " waitUntilFind = Not find ");
 		}
+	}
+	public static void waitUntilByFindAttribute(By by,String attributeName,String attributeValue,int seconds){
+		boolean find = false;
+		for (int i = 0; i < seconds; i++) {
+			try {
+				String value = getElement(by).getAttribute(attributeName);
+				if (attributeValue.equals(value)) {
+					find=true;
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			if(find){
+				break;
+			}else {
+				wait(2);
+			}
+		}
+	}
+	public static boolean waitUntilByFindText(By by,String text,int seconds){
+		boolean find = false;
+		for (int i = 0; i < seconds; i++) {
+			try {
+				String value = getElement(by).getText();
+				if (text.equals(value)) {
+					find=true;
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			if(find){
+				break;
+			}else {
+				wait(2);
+			}
+		}
+		return find;
 	}
 	public static void waitUntilByGone(By by,int seconds){
 		Log.info(String.format("waitUntilByNotFind in %d secods",seconds));
@@ -458,7 +515,7 @@ public class VP  extends BaseSelenium{
 	 * @param timeout 等待的事件
 	 * @return
 	 */
-	public boolean isElementExist(By by, int timeout) {
+	public static boolean isElementExist(By by, int timeout) {
 		try {
 			WebElement element = waitAuto(by, timeout);
 			if (element == null) {
@@ -470,6 +527,18 @@ public class VP  extends BaseSelenium{
 			return false;
 		}
 	}
+	public static boolean isElementExist(By by,String arrributeName,String attributeValue) {
+		boolean exists = false;
+		try {
+			String value = getElement(by).getAttribute(arrributeName);
+			if (attributeValue.equals(value)) {
+				exists=true;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return exists;
+	}
 	public static boolean hasAttribute(WebElement webElement,String attributename){
 		boolean has = false;
 		try {
@@ -478,9 +547,13 @@ public class VP  extends BaseSelenium{
 			has=true;
 		} catch (Exception e) {
 			// TODO: handle exception
-			
+
 		}
 		return has;
+	}
+	public static String getAttribute(WebElement webElement,String attributename){
+		String  value =webElement.getAttribute(attributename);
+		return value;
 	}
 	public static boolean waitFileDownload(String fileName,int time){
 		boolean result = false;
@@ -506,5 +579,64 @@ public class VP  extends BaseSelenium{
 			}
 		}
 		return result;
+	}
+	public static void switchWindowHandle(){
+		String  oldhandles = getDriver().getWindowHandle();
+		Set<String> newhandles = getDriver().getWindowHandles();
+		newhandles.remove(oldhandles);
+		setDriver(getDriver().switchTo().window(newhandles.iterator().next()));
+	}
+	public static void windowHandleForword(){
+		String  current = getDriver().getWindowHandle();
+		Set<String> allhandles = getDriver().getWindowHandles();
+		int size = allhandles.size();
+		for (int i = 0; i < size; i++) {
+			String iterator = (String)allhandles.toArray()[i];
+			if (iterator.equals(current)) {
+				if (i+1<size) {
+					String next =  (String)allhandles.toArray()[i+1];
+					setDriver(getDriver().switchTo().window(next));
+				}else {
+					setDriver(getDriver().switchTo().window(iterator));
+				}
+				break;
+			}
+		}
+	}
+	public static void windowHandleBack(){
+		String  current = getDriver().getWindowHandle();
+		Set<String> allhandles = getDriver().getWindowHandles();
+		int size = allhandles.size();
+		for (int i = 0; i < size; i++) {
+			String iterator = (String)allhandles.toArray()[i];
+			if (iterator.equals(current)) {
+				if (0<=i-1) {
+					String back =  (String)allhandles.toArray()[i-1];
+					setDriver(getDriver().switchTo().window(back));
+				}else {
+					setDriver(getDriver().switchTo().window(iterator));
+				}
+				break;
+			}
+		}
+	}
+	public static String waitForNewWindowHandle(WebElement elementToClick,int waitTime){
+		Set<String> afterPopUp;
+		int timeOut = waitTime*2;
+		Set<String> beforePopUp = getDriver().getWindowHandles();
+		do{
+			elementToClick.click();
+			wait(1);
+			afterPopUp = getDriver().getWindowHandles();
+			afterPopUp.removeAll(beforePopUp);
+			timeOut -= 1;
+		}while(afterPopUp.size() != 1 && timeOut != 0);
+
+		if(afterPopUp.size() == 1){
+			return (String)afterPopUp.toArray()[0];
+		}
+		else{
+			return null;
+		}
 	}
 }

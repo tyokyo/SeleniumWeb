@@ -66,6 +66,14 @@ public class TestDataProvider extends VP{
 		return obj;
 	}
 	@DataProvider()
+	public static Object[][] followunfollow(Method method) {
+		obj= new Object[][] { 
+				{"follow"}, 
+				{"unfollow"}
+		};  
+		return obj;
+	}
+	@DataProvider()
 	public static Object[][] offlinevideo(Method method) {
 		obj= new Object[][] { 
 				{"精彩"}, 

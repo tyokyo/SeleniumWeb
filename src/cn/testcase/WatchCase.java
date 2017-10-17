@@ -2,19 +2,12 @@ package cn.testcase;
 
 import java.util.List;
 
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoAlertPresentException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
 import cn.bean.FollowBean;
 import cn.page.AccountPage;
 import cn.page.WatchPage;
@@ -29,6 +22,12 @@ public class WatchCase extends VP{
 		startSioeye();		
 		AccountPage.loginAccount();
 	}
+	/** 
+	* @Title: addRecommandFollow 
+	* @Date:2017年10月13日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 添加推荐关注
+	*/
 	@Test
 	public void addRecommandFollow(){
 		WaitCondition.waitElementToBeClickable(WatchPage.userAddFirstRecommandFollow, 10);
@@ -45,6 +44,12 @@ public class WatchCase extends VP{
 		}
 		Assert.assertEquals(actual, true,"follow success");
 	}
+	/** 
+	* @Title: followDel 
+	* @Date:2017年10月13日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 取消关注
+	*/
 	@Test
 	public void followDel(){
 		WatchPage.clickUserFollow();
@@ -62,6 +67,12 @@ public class WatchCase extends VP{
 		}
 		Assert.assertEquals(actual, false,"del follow success");
 	}
+	/** 
+	* @Title: fansAddFollow 
+	* @Date:2017年10月13日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 添加粉丝关注
+	*/
 	@Test 
 	public void fansAddFollow(){
 		WatchPage.clickUserFans();
@@ -81,6 +92,12 @@ public class WatchCase extends VP{
 		}
 		Assert.assertEquals(actual, true,"fans add follow success");
 	}
+	/** 
+	* @Title: fansDelFollow 
+	* @Date:2017年10月13日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 删除粉丝
+	*/
 	@Test
 	public void fansDelFollow(){
 		WatchPage.clickUserFans();
@@ -100,6 +117,12 @@ public class WatchCase extends VP{
 		}
 		Assert.assertEquals(actual, true,"fans del follow success");
 	}
+	/** 
+	* @Title: videoDelete 
+	* @Date:2017年10月13日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 删除视频
+	*/
 	@Test
 	public void videoDelete(){
 		WatchPage.clickUserVideo();
@@ -113,6 +136,12 @@ public class WatchCase extends VP{
         List<String> times = WatchPage.getAllVideosrc();
        Assert.assertEquals( times.contains(url), false,"delete success-"+url);
 	}
+	/** 
+	* @Title: videoDownLoad 
+	* @Date:2017年10月13日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 下载视频
+	*/
 	@Test
 	public void videoDownLoad(){
 		WatchPage.clickUserVideo();

@@ -11,7 +11,7 @@ public class HomePage  extends VP{
 	//Sioeye喜爱直播相机官网
 	static By logo = By.className("ttbar-login");
 	//发现
-	static By discover = By.className("discover active");
+	static By discover = By.cssSelector("a[class='discover active']");
 	//关注
 	static By follow = By.className("follow");
 	//消息
@@ -36,6 +36,11 @@ public class HomePage  extends VP{
 	static By settings = By.linkText("设置");
 	//退出登录
 	static By logout = By.linkText("退出登录");
+	//输入评论内容
+	public static By comment_input = By.id("comment-input");
+	//发送评论
+	public static By comment_send = By.id("comment-send");
+
 	/** 
 	 * @Title: clickLogo 
 	 * @author qiang.zhang@ck-telecom.com
@@ -94,55 +99,55 @@ public class HomePage  extends VP{
 	public static void clickSearchbtns(){
 		clickElement(btns_search);
 	}
-	
+
 	/** 
-	* @Title: clickSearchvideo 
-	* @Date:2017年10月11日
-	* @author qiang.zhang@ck-telecom.com
-	* @Description: 搜索视频
-	*/
+	 * @Title: clickSearchvideo 
+	 * @Date:2017年10月11日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 搜索视频
+	 */
 	public static void clickSearchvideo(){
 		clickElement(btns_search_video);
 	}
-	
+
 	/** 
-	* @Title: clickSearchuser 
-	* @Date:2017年10月11日
-	* @author qiang.zhang@ck-telecom.com
-	* @Description: 搜索用户
-	*/
+	 * @Title: clickSearchuser 
+	 * @Date:2017年10月11日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 搜索用户
+	 */
 	public static void clickSearchuser(){
 		getElement(By.className("resource-btn-box")).findElements(By.tagName("a")).get(1).click();
 	}
 	/** 
-	* @Title: searchInput 
-	* @Date:2017年10月11日
-	* @author qiang.zhang@ck-telecom.com
-	* @Description: 输入搜索内容
-	* @param content void
-	*/
+	 * @Title: searchInput 
+	 * @Date:2017年10月11日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 输入搜索内容
+	 * @param content void
+	 */
 	public static void searchInput(String content){
 		sendKeys(search_input, content);
 	}
 	/** 
-	* @Title: searchVideoResult 
-	* @Date:2017年10月11日
-	* @author qiang.zhang@ck-telecom.com
-	* @Description: 搜索视频结果
-	* @return List<WebElement>
-	*/
+	 * @Title: searchVideoResult 
+	 * @Date:2017年10月11日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 搜索视频结果
+	 * @return List<WebElement>
+	 */
 	public static List<WebElement> searchVideoResult(){
 		List<WebElement> resultsElements=getElement(By.className("live-video")).findElements(By.tagName("a"));
 		return resultsElements;
 	}
-	
+
 	/** 
-	* @Title: searchUserResult 
-	* @Date:2017年10月11日
-	* @author qiang.zhang@ck-telecom.com
-	* @Description: 搜索用户结果
-	* @return List<WebElement>
-	*/
+	 * @Title: searchUserResult 
+	 * @Date:2017年10月11日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 搜索用户结果
+	 * @return List<WebElement>
+	 */
 	public static List<WebElement> searchUserResult(){
 		List<WebElement> resultsElements= getElement(By.className("search-user-list")).findElements(By.tagName("div"));
 		return resultsElements;
@@ -157,42 +162,62 @@ public class HomePage  extends VP{
 		clickElement(btn_login);
 	}
 	/** 
-	* @Title: clickPersonalPage 
-	* @Date:2017年9月14日
-	* @author qiang.zhang@ck-telecom.com
-	* @Description: 点击-个人主页
-	*/
+	 * @Title: clickPersonalPage 
+	 * @Date:2017年9月14日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 点击-个人主页
+	 */
 	public static void clickPersonalPage(){
 		clickElement(personalPage);
 	}
-	
+
 	/** 
-	* @Title: clickSetting 
-	* @Date:2017年9月14日
-	* @author qiang.zhang@ck-telecom.com
-	* @Description: 点击-设置
-	*/
+	 * @Title: clickSetting 
+	 * @Date:2017年9月14日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 点击-设置
+	 */
 	public static void clickSetting(){
 		clickElement(settings);
 	}
 	/** 
-	* @Title: clickLogout 
-	* @Date:2017年9月14日
-	* @author qiang.zhang@ck-telecom.com
-	* @Description: 点击-退出登录
-	*/
+	 * @Title: clickLogout 
+	 * @Date:2017年9月14日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 点击-退出登录
+	 */
 	public static void clickLogout(){
 		clickElement(logout);
 		waitUntilByGone(logout, 10);
 	}
-	
+
 	/** 
-	* @Title: clickAavtar 
-	* @Date:2017年9月14日
-	* @author qiang.zhang@ck-telecom.com
-	* @Description: 点击-头像
-	*/
+	 * @Title: clickAavtar 
+	 * @Date:2017年9月14日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 点击-头像
+	 */
 	public static void clickAavtar(){
 		clickElement(avatar);
+	}
+	/** 
+	* @Title: commentInput 
+	* @Date:2017年10月13日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 输入评论内容
+	* @param comments void
+	*/
+	public static void commentInput(String comments){
+		wait(5);
+		sendKeys(comment_input, comments);
+	}
+	/** 
+	* @Title: clickSendComments 
+	* @Date:2017年10月13日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 发送评论
+	*/
+	public static void clickSendComments(){
+		clickElement(comment_send);
 	}
 }

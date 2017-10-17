@@ -1,8 +1,13 @@
 package cn.page;
+import java.util.List;
+
 import model.VP;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+
+import util.Log;
+import cn.bean.FollowBean;
 /**
  * 
  * @ClassName: promotion_page 
@@ -20,7 +25,7 @@ public class PromotionPage extends VP{
 	//举报别人的视频
 	static By report =  By.className("report-box");
 	//点赞别人的视频
-	static By like = By.className("like-box");
+	static By like = By.cssSelector("div.count-box.bottom-box-right");
 	//分享别人的视频
 	static By share = By.xpath("//*[@id='promotion-wrap']/div/div[2]/div[3]/div[2]/div[3]");
 	//点赞自己的视频
@@ -72,6 +77,8 @@ public class PromotionPage extends VP{
 	 */
 	public static void clickReport(){
 		clickElement(report);	
+		waitUntilByFind(By.cssSelector("div.pop-up-box.report"), 10);
+		wait(3);
 	}
 
 	/** 
@@ -81,7 +88,11 @@ public class PromotionPage extends VP{
 	 * @return void    返回类型 
 	 */
 	public static void clickLike(){
-		clickElement(like);	
+		WebElement likeElement = getElement(like).findElement(By.className("like-box"));
+		unHighlightElement(likeElement);
+		wait(1);
+		highlightElement(likeElement);
+		likeElement.click();
 	}
 
 	/** 
@@ -183,5 +194,19 @@ public class PromotionPage extends VP{
 	public static void clickComment_send(){
 		clickElement(comment_send);	
 	}			
-
+	public static boolean hasValue(List<FollowBean> infos ,String value){
+		boolean hasFind = false;
+		for (FollowBean followBean : infos) {
+			if (followBean.toString().contains(value)) {
+				hasFind=true;
+				String msg =String.format("%s contains %s = %s",followBean.toString(),value,hasFind); 
+				Log.info(msg);
+				break;
+			}else {
+				String msg =String.format("%s contains %s = %s",followBean.toString(),value,hasFind); 
+				Log.info(msg);
+			}
+		}
+		return hasFind;
+	}
 }

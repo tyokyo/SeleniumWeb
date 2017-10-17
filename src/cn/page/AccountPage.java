@@ -112,6 +112,7 @@ public class AccountPage extends VP{
 	 */
 	public static void clickLoginAccountBtn(){
 		clickElement(loginBtn);
+		waitUntilByFind(HomePage.discover, 10);
 	}
 
 	/** 

@@ -50,5 +50,24 @@ public class WaitCondition extends VP {
 		WebDriverWait wait = new WebDriverWait(getDriver(), timeOutInSeconds);
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
 	}
-	
+	public static void waitTextToBePresentInElementLocated(By locator,String text,int timeOutInSeconds){
+		Log.info(locator.toString(), "-text="+text,"timeOutInSeconds="+timeOutInSeconds);
+		WebDriverWait wait = new WebDriverWait(getDriver(), timeOutInSeconds);
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(locator, text));
+	}
+	public static void waitInvisibilityOfElementWithText(By locator,String text,int timeOutInSeconds){
+		Log.info(locator.toString(), "-text="+text,"timeOutInSeconds="+timeOutInSeconds);
+		WebDriverWait wait = new WebDriverWait(getDriver(), timeOutInSeconds);
+		wait.until(ExpectedConditions.invisibilityOfElementWithText(locator, text));
+	}
+	public static void waitInvisibilityOf(WebElement element,int timeOutInSeconds){
+		Log.info("wati element in timeOutInSeconds="+timeOutInSeconds);
+		WebDriverWait wait = new WebDriverWait(getDriver(), timeOutInSeconds);
+		wait.until(ExpectedConditions.invisibilityOf(element));
+	}
+	public static void waitInvisibilityOf(By locator,int timeOutInSeconds){
+		Log.info(locator.toString(),"timeOutInSeconds="+timeOutInSeconds);
+		WebDriverWait wait = new WebDriverWait(getDriver(), timeOutInSeconds);
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
+	}
 }
