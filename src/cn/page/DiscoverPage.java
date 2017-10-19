@@ -1,17 +1,21 @@
 package cn.page;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-
 import util.Log;
 import model.VP;
-import model.WaitCondition;
 
+/** 
+* @ClassName: DiscoverPage 
+* @Description: https://live.sioeye.cn/discovery
+* @author qiang.zhang@ck-telecom.com
+* @date 2017年10月17日 下午4:57:51 
+*  
+*/
 public class DiscoverPage extends VP{
 	public static By report_reason=By.className("report-reason");
 	public static By report_reason_item=By.className("report-reason-box");
@@ -103,13 +107,29 @@ public class DiscoverPage extends VP{
 		return id;
 	}
 	
+	/** 
+	* @Title: getAllRecommandUser 
+	* @Date:2017年10月17日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 所有推荐达人的名字
+	* @return List<String>
+	*/
+	public static List<String> getAllRecommandUser(){
+		List<String> user = new ArrayList<String>();
+		List<WebElement> elements = getElements(By.cssSelector("span.name.ellipsis"));
+		for (WebElement webElement : elements) {
+			user.add(webElement.getText());
+		}
+		return user;
+	}
+	/** 
+	* @Title: clickFirstBigFunRecommand 
+	* @Date:2017年10月17日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 点击-第一个推荐达人
+	*/
 	public static void clickFirstBigFunRecommand(){
-		//WaitCondition.waitInvisibilityOf(recommand_user_name_first, 10);
-		/*
-		WaitCondition.waitInvisibilityOfElementLocated(recommand_user_name_first, 60);
-		wait(20);*/
-		((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView();", getElement(recommand_user_name_first)); 
-		wait(5);
+		scrollToElement(recommand_user_name_first, 10);
 		clickElement(recommand_user_name_first);
 		wait(5);
 	}

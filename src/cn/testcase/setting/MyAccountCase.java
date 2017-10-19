@@ -4,17 +4,27 @@ import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-
+import cn.page.AccountPage;
 import cn.page.setting.MyAccountPage;
 import model.VP;
-//https://live.sioeye.cn/settings#account 我的账号
+
+/** 
+* @ClassName: MyAccountCase 
+* @Description: //https://live.sioeye.cn/settings#account 我的账号
+* @author qiang.zhang@ck-telecom.com
+* @date 2017年10月18日 下午3:05:14 
+*  
+*/
 public class MyAccountCase extends VP{
-	@BeforeTest
-	public void beforeTest(){
-		initialize("chrome","tyokyo@126.com","1234567890");
-		startSioeye();		
+	@Parameters({"browser","username","password"})
+	@BeforeMethod
+	public void beforeTest(String browser,String username,String password){
+		initialize(browser,username,password);
+		startSioeye();
+		AccountPage.loginAccount();
 	}
 	@AfterTest
 	public void afterTest(){

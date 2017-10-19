@@ -4,8 +4,6 @@ import model.VP;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-
-import cn.page.AccountPage;
 import cn.page.HomePage;
 
 public class MyAccountPage  extends VP{
@@ -28,7 +26,6 @@ public class MyAccountPage  extends VP{
 	static By close = By.className("close");
 	
 	public static void navToMyAccount(){
-		AccountPage.loginAccount();
 		HomePage.clickAavtar();
 		HomePage.clickSetting();
 		NavToSetting.navToEditInfo("我的账号");

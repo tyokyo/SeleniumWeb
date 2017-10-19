@@ -7,10 +7,12 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import cn.data.TestDataProvider;
 import cn.page.AccountPage;
+import cn.page.DiscoverPage;
 import cn.page.HomePage;
 import cn.page.PromotionPage;
 import cn.page.WatchPage;
@@ -25,19 +27,14 @@ import util.TakeScreen;
  * @date 2017年8月21日 下午3:16:58 
  *  
  */
+@Test
 public class HomePageCase  extends VP{
-
+	@Parameters({"browser","username","password"})
 	@BeforeMethod
-	public void BeforeMethod(){
-		initialize("chrome","tyokyo@126.com","1234567890");
-		startSioeye();		
-	}
-	/*
-	 * @Parameters({"browser","username","password"})
-	 * public void beforeTest(String browser,String username,String password){
+	public void beforeTest(String browser,String username,String password){
 		initialize(browser,username,password);
 		startSioeye();
-	}*/
+	}
 
 	/** 
 	 * @Title: testPlayWonderfulLive 
@@ -63,12 +60,12 @@ public class HomePageCase  extends VP{
 		}
 	}
 	/** 
-	* @Title: testWatchVideoThenFollow 
-	* @Date:2017年10月11日
-	* @author qiang.zhang@ck-telecom.com
-	* @Description: 未登录账号，观看视频，添加关注，跳转到登录界面
-	* @param videoDomain void
-	*/
+	 * @Title: testWatchVideoThenFollow 
+	 * @Date:2017年10月11日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 未登录账号，观看视频，添加关注，跳转到登录界面
+	 * @param videoDomain void
+	 */
 	@Test(description="播放视频+Follow",dataProvider="offlinevideo",dataProviderClass=TestDataProvider.class)
 	public void testWatchVideoThenFollow(String videoDomain){
 		Set<String> oldhandles = getDriver().getWindowHandles();
@@ -99,12 +96,12 @@ public class HomePageCase  extends VP{
 		}
 	}
 	/** 
-	* @Title: testWatchVideoThenReport 
-	* @Date:2017年10月11日
-	* @author qiang.zhang@ck-telecom.com
-	* @Description: 未登录账号，观看视频，举报，跳转到登录界面
-	* @param videoDomain void
-	*/
+	 * @Title: testWatchVideoThenReport 
+	 * @Date:2017年10月11日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 未登录账号，观看视频，举报，跳转到登录界面
+	 * @param videoDomain void
+	 */
 	@Test(description="播放视频+举报",dataProvider="offlinevideo",dataProviderClass=TestDataProvider.class)
 	public void testWatchVideoThenReport(String videoDomain){
 		Set<String> oldhandles = getDriver().getWindowHandles();
@@ -134,14 +131,14 @@ public class HomePageCase  extends VP{
 			}
 		}
 	}
-	
+
 	/** 
-	* @Title: testWatchVideoThenLike 
-	* @Date:2017年10月11日
-	* @author qiang.zhang@ck-telecom.com
-	* @Description: 未登录账号，观看视频，点赞，跳转到登录界面
-	* @param videoDomain void
-	*/
+	 * @Title: testWatchVideoThenLike 
+	 * @Date:2017年10月11日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 未登录账号，观看视频，点赞，跳转到登录界面
+	 * @param videoDomain void
+	 */
 	@Test(description="播放视频+点赞",dataProvider="offlinevideo",dataProviderClass=TestDataProvider.class)
 	public void testWatchVideoThenLike(String videoDomain){
 		Set<String> oldhandles = getDriver().getWindowHandles();
@@ -172,12 +169,12 @@ public class HomePageCase  extends VP{
 		}
 	}
 	/** 
-	* @Title: testWatchVideoThenLike 
-	* @Date:2017年10月11日
-	* @author qiang.zhang@ck-telecom.com
-	* @Description: 未登录账号，观看视频，评论，跳转到登录界面
-	* @param videoDomain void
-	*/
+	 * @Title: testWatchVideoThenLike 
+	 * @Date:2017年10月11日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 未登录账号，观看视频，评论，跳转到登录界面
+	 * @param videoDomain void
+	 */
 	@Test(description="播放视频+评论",dataProvider="offlinevideo",dataProviderClass=TestDataProvider.class)
 	public void testWatchVideoThenComment (String videoDomain){
 		Set<String> oldhandles = getDriver().getWindowHandles();
@@ -197,7 +194,7 @@ public class HomePageCase  extends VP{
 					newhandles.removeAll(oldhandles);
 					setDriver(getDriver().switchTo().window(newhandles.iterator().next()));
 					TakeScreen.takeScreenShotWithDraw(domain);
-					
+
 					waitUntilByFindAttribute(HomePage.comment_input, "placeholder", "文明上网理性发言", 30);
 					HomePage.commentInput("来了");
 					HomePage.clickSendComments();
@@ -211,12 +208,11 @@ public class HomePageCase  extends VP{
 		}
 	}
 	/** 
-	* @Title: testSearchVideo 
-	* @Date:2017年10月11日
-	* @author qiang.zhang@ck-telecom.com
-	* @Description: 搜索
-	*/
-	@Test
+	 * @Title: testSearchVideo 
+	 * @Date:2017年10月11日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 搜索
+	 */
 	public void testSearchVideo(){
 		HomePage.clickSearchbtn();
 		HomePage.searchInput("成都");
@@ -226,9 +222,14 @@ public class HomePageCase  extends VP{
 		if (results.size()==0) {
 			Assert.assertEquals(true, false,"No result searched");
 		}
-		
+
 	}
-	@Test
+	/** 
+	 * @Title: testSearchUser 
+	 * @Date:2017年10月17日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 搜索用户
+	 */
 	public void testSearchUser(){
 		HomePage.clickSearchbtn();
 		HomePage.searchInput("成都");
@@ -242,10 +243,45 @@ public class HomePageCase  extends VP{
 			Assert.assertEquals(true, false,"No result searched");
 		}
 	}
-	@Test
-	public void Test(){
-		HomePage.clickDiscover();
+
+	/** 
+	 * @Title: testNavToWatch 
+	 * @Date:2017年10月17日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 点击关注-导航到登录页面
+	 */
+	public void testNavToWatch(){
 		HomePage.clickFollow();
+		WaitCondition.waitElementToBeClickable(AccountPage.username, 60);
+		TakeScreen.takeScreenShotWithDraw("account_page");
+		Assert.assertEquals(isElementExist(AccountPage.password,5), true,"login page");
+	}
+	/** 
+	 * @Title: testNavToNotifications 
+	 * @Date:2017年10月17日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 点击消息-导航到登录页面
+	 */
+	public void testNavToNotifications(){
+		HomePage.clickNotifacations();;
+		WaitCondition.waitElementToBeClickable(AccountPage.username, 60);
+		TakeScreen.takeScreenShotWithDraw("account_page");
+		Assert.assertEquals(isElementExist(AccountPage.password,5), true,"login page");
+	}
+	/** 
+	 * @Title: testRefresh 
+	 * @Date:2017年10月17日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description:推荐达人-换一批
+	 */
+	public void testRefresh(){
+		scrollToElement(HomePage.recommand_user, 10);
+		List<String> before = DiscoverPage.getAllRecommandUser();
+		HomePage.clickRefresh();
+		List<String> after = DiscoverPage.getAllRecommandUser();
+		before.removeAll(after);
+		after.remove(before);
+		Assert.assertEquals(before.size(), after.size());
 	}
 	@AfterMethod
 	public void afterTest(){

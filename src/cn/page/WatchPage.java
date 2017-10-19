@@ -2,8 +2,6 @@ package cn.page;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -203,15 +201,24 @@ public class WatchPage extends VP{
 		String signature=getElement(userSignatureValue).getText();
 		watchBean.setNickname(nickname);
 		watchBean.setSioeyeid(sioeyeid);
-		watchBean.setVideocount(Integer.parseInt(videocount));
-		watchBean.setFollowcount(Integer.parseInt(followcount));
-		watchBean.setFanscount(Integer.parseInt(fanscount));
-		watchBean.setZancount(Integer.parseInt(zancount));
+		watchBean.setVideocount(doKString(videocount));
+		watchBean.setFollowcount(doKString(followcount));
+		watchBean.setFanscount(doKString(fanscount));
+		watchBean.setZancount(doKString(zancount));
 		watchBean.setLocation(location);
 		watchBean.setHobby(hobby);
 		watchBean.setSignature(signature);
 		System.out.println(watchBean.toString());
 		return watchBean;
+	}
+	public static int doKString(String count){
+		int total = 0;
+		if (count.toLowerCase().contains("k")) {
+			total=(int)Double.parseDouble(count.replaceAll("k", "").trim())*1000;
+		}else {
+			total=Integer.parseInt(count);
+		}
+		return total;
 	}
 	
 	/** 
@@ -303,5 +310,16 @@ public class WatchPage extends VP{
 			times.add(url);
 		}
 		return times;
+	}
+	/** 
+	* @Title: clickMore 
+	* @Date:2017年10月19日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 更多
+	*/
+	public static void clickMore(){
+		WebElement element =getElement(By.cssSelector("div.live-types.recent-live")).findElement(By.className("refresh"));
+		element.click();
+		windowHandleForword();
 	}
 }

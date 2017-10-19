@@ -2,9 +2,9 @@ package model;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -42,6 +42,7 @@ public class VP  extends BaseSelenium{
 	 */
 	public static void clickElement(By by){
 		getElement(by).click();
+		wait(1);
 		Log.info("click by - "+by.toString());
 	}
 
@@ -92,6 +93,7 @@ public class VP  extends BaseSelenium{
 	}
 	public static void clickElement(WebElement element){
 		Log.info("Action-click ");
+		highlightElement(element);
 		element.click();
 	}
 	/** 
@@ -527,6 +529,16 @@ public class VP  extends BaseSelenium{
 			return false;
 		}
 	}
+	/** 
+	 * @Title: isElementExist 
+	 * @Date:2017年10月17日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 判定指定对象是否存在
+	 * @param by
+	 * @param arrributeName
+	 * @param attributeValue
+	 * @return boolean
+	 */
 	public static boolean isElementExist(By by,String arrributeName,String attributeValue) {
 		boolean exists = false;
 		try {
@@ -539,6 +551,15 @@ public class VP  extends BaseSelenium{
 		}
 		return exists;
 	}
+	/** 
+	 * @Title: hasAttribute 
+	 * @Date:2017年10月17日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 是否存在属性
+	 * @param webElement
+	 * @param attributename
+	 * @return boolean
+	 */
 	public static boolean hasAttribute(WebElement webElement,String attributename){
 		boolean has = false;
 		try {
@@ -551,10 +572,29 @@ public class VP  extends BaseSelenium{
 		}
 		return has;
 	}
+	/** 
+	 * @Title: getAttribute 
+	 * @Date:2017年10月17日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description:获取 属性值 
+	 * @param webElement
+	 * @param attributename
+	 * @return String
+	 */
 	public static String getAttribute(WebElement webElement,String attributename){
 		String  value =webElement.getAttribute(attributename);
+		Log.info(value);
 		return value;
 	}
+	/** 
+	 * @Title: waitFileDownload 
+	 * @Date:2017年10月17日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 等待下载完成
+	 * @param fileName
+	 * @param time
+	 * @return boolean
+	 */
 	public static boolean waitFileDownload(String fileName,int time){
 		boolean result = false;
 		String path ="C:\\Users\\DELL\\Downloads\\";
@@ -586,6 +626,12 @@ public class VP  extends BaseSelenium{
 		newhandles.remove(oldhandles);
 		setDriver(getDriver().switchTo().window(newhandles.iterator().next()));
 	}
+	/** 
+	 * @Title: windowHandleForword 
+	 * @Date:2017年10月17日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 后一个页面作为driver的所有者
+	 */
 	public static void windowHandleForword(){
 		String  current = getDriver().getWindowHandle();
 		Set<String> allhandles = getDriver().getWindowHandles();
@@ -603,6 +649,12 @@ public class VP  extends BaseSelenium{
 			}
 		}
 	}
+	/** 
+	 * @Title: windowHandleBack 
+	 * @Date:2017年10月17日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 前一个页面作为driver所有者
+	 */
 	public static void windowHandleBack(){
 		String  current = getDriver().getWindowHandle();
 		Set<String> allhandles = getDriver().getWindowHandles();
@@ -620,7 +672,40 @@ public class VP  extends BaseSelenium{
 			}
 		}
 	}
-	public static String waitForNewWindowHandle(WebElement elementToClick,int waitTime){
+	/** 
+	 * @Title: scrollToElement 
+	 * @Date:2017年10月17日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 滑动到某一个By
+	 * @param by
+	 * @param timeOfSeconds 等待时间
+	 */
+	public static void scrollToElement(By by,int timeOfSeconds){
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView();", getElement(by)); 
+		wait(timeOfSeconds);
+	}
+	/** 
+	 * @Title: scrollToElement 
+	 * @Date:2017年10月17日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 滑动到某一个WebElement
+	 * @param element
+	 * @param timeOfSeconds 等待时间
+	 */
+	public static void scrollToElement(WebElement element ,int timeOfSeconds){
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView();", element); 
+		wait(timeOfSeconds);
+	}
+	/** 
+	 * @Title: waitForNewWindowHandle 
+	 * @Date:2017年10月17日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 等待新的窗体加载完成
+	 * @param elementToClick
+	 * @param waitTime
+	 * @return String
+	 */
+	public  String clickForNewWindowHandle(WebElement elementToClick,int waitTime){
 		Set<String> afterPopUp;
 		int timeOut = waitTime*2;
 		Set<String> beforePopUp = getDriver().getWindowHandles();
@@ -639,4 +724,30 @@ public class VP  extends BaseSelenium{
 			return null;
 		}
 	}
+	public static String getRandomChinese(int length) {
+		String result = "";
+		for (int i = 1; i <=length; i++) {
+			result=result+getRandomChar();
+		}
+		return result;
+	}
+	private static String getRandomChar() {
+		String str = "";
+		int hightPos;
+		int lowPos;
+		Random random = new Random();
+		hightPos = (176 + Math.abs(random.nextInt(39)));
+		lowPos = (161 + Math.abs(random.nextInt(93)));
+		byte[] b = new byte[2];
+		b[0] = (Integer.valueOf(hightPos)).byteValue();
+		b[1] = (Integer.valueOf(lowPos)).byteValue();
+		try {
+			str = new String(b, "GBK");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			System.out.println("错误");
+		}
+		return String.valueOf(str.charAt(0));
+	}
+
 }

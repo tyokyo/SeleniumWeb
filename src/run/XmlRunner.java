@@ -25,7 +25,7 @@ public class XmlRunner {
 		//testNG.setSuiteThreadPoolSize(2);
 		testNG.setOutputDirectory(TestNgXml.reportFolder);
 		List<String> suits = new ArrayList<String>();
-		suits.add("xml/HomePageCase.xml");
+		suits.add("xml/DiscoverCase.xml");
 		testNG.setTestSuites(suits);
 		testNG.run();
 		System.out.println(testNG.getOutputDirectory());

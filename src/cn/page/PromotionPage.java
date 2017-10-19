@@ -21,7 +21,7 @@ public class PromotionPage extends VP{
 	//主播头像
 	static By Anchor_avatar = By.xpath("//*[@id='promotion-wrap']/div/div[1]/div[1]/a/img");	
 	//关注或取消按钮
-	static By follow = By.cssSelector("#promotion-wrap .btn-follow");
+	public static By follow = By.cssSelector("#promotion-wrap .btn-follow");
 	//举报别人的视频
 	static By report =  By.className("report-box");
 	//点赞别人的视频
@@ -194,16 +194,16 @@ public class PromotionPage extends VP{
 	public static void clickComment_send(){
 		clickElement(comment_send);	
 	}			
-	public static boolean hasValue(List<FollowBean> infos ,String value){
+	public static boolean hasValue(List<FollowBean> infos ,String id){
 		boolean hasFind = false;
 		for (FollowBean followBean : infos) {
-			if (followBean.toString().contains(value)) {
+			if (id.equals(followBean.getSioeyeid())) {
 				hasFind=true;
-				String msg =String.format("%s contains %s = %s",followBean.toString(),value,hasFind); 
+				String msg =String.format("%s contains %s = %s",followBean.toString(),id,hasFind); 
 				Log.info(msg);
 				break;
 			}else {
-				String msg =String.format("%s contains %s = %s",followBean.toString(),value,hasFind); 
+				String msg =String.format("%s contains %s = %s",followBean.toString(),id,hasFind); 
 				Log.info(msg);
 			}
 		}

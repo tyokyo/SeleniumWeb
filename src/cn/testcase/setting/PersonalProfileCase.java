@@ -1,24 +1,15 @@
 package cn.testcase.setting;
 
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Set;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-
 import util.Log;
 import cn.data.TestDataProvider;
 import cn.page.AccountPage;
-import cn.page.HomePage;
-import cn.page.setting.NavToSetting;
 import cn.page.setting.PersonalProfilePage;
 import model.VP;
 import model.WaitCondition;
@@ -32,11 +23,19 @@ import model.WaitCondition;
  *  
  */
 public class PersonalProfileCase  extends VP{
+	@Parameters({"browser","username","password"})
 	@BeforeMethod
-	public void beforeTest(){
-		initialize("chrome","tyokyo@126.com","1234567890");
+	public void beforeTest(String browser,String username,String password){
+		initialize(browser,username,password);
 		startSioeye();
+		AccountPage.loginAccount();
 	}
+	/*@BeforeMethod
+	public void BeforeMethod(){
+		initialize("chrome","tyokyo@126.com","123456789");
+		startSioeye();		
+		AccountPage.loginAccount();
+	}*/
 	@AfterMethod
 	public void afterTest(){
 		quiteSelenium();

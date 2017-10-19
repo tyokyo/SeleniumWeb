@@ -13,6 +13,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import util.Log;
 import util.ParameterBean;
+import util.Property;
 
 import org.apache.log4j.PropertyConfigurator; 
 /** 
@@ -61,7 +62,8 @@ public class BaseSelenium {
 		driver.manage().deleteAllCookies();
 	}
 	public static void startSioeye(){
-		launchUrl("https://live.sioeye.cn/");
+		String URL = Property.getValueByKey("properties/config.properties", "URL");
+		launchUrl(URL);
 	}
 	/**
 	 * 初始化driver 参数
@@ -121,7 +123,8 @@ public class BaseSelenium {
 		o.setBinary(System.getProperty("user.dir")+"\\browser\\chrome\\chrome.exe");
 		//初始化一个chrome浏览器实例，实例名称叫driver    
 		driver = new ChromeDriver(o);
-		startTestAddress("https://live.sioeye.cn/");
+		String URL = Property.getValueByKey("properties/config.properties", "URL");
+		startTestAddress(URL);
 	}
 
 	/**

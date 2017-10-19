@@ -1,25 +1,28 @@
 package cn.testcase;
 
 import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import cn.bean.FollowBean;
+import cn.bean.WatchBean;
+import cn.data.TestDataProvider;
 import cn.page.AccountPage;
 import cn.page.WatchPage;
+import cn.page.setting.PersonalProfilePage;
 import model.VP;
 import model.WaitCondition;
 
 public class WatchCase extends VP{
-
+	@Parameters({"browser","username","password"})
 	@BeforeMethod
-	public void BeforeMethod(){
-		initialize("chrome","tyokyo@126.com","1234567890");
-		startSioeye();		
+	public void beforeTest(String browser,String username,String password){
+		initialize(browser,username,password);
+		startSioeye();
 		AccountPage.loginAccount();
 	}
 	/** 
@@ -150,6 +153,73 @@ public class WatchCase extends VP{
 		WatchPage.clickDownloadVideo(videoElement);
 		boolean actival = waitFileDownload(filename+".mp4", 120);
 		 Assert.assertEquals( actival, true,"download success-"+filename);
+	}
+	
+	/** 
+	 * @Title: testModifyNickName 
+	 * @Date:2017年9月14日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 修改昵称
+	 */
+	@Test(description="昵称修改",dataProvider="nickname",dataProviderClass=TestDataProvider.class)
+	public void testModifyNickName(String nickname){
+		PersonalProfilePage.navToInfo();
+		
+		PersonalProfilePage.clearNickname();
+		String expectNickName = nickname;
+		PersonalProfilePage.inputNickname(expectNickName);
+		PersonalProfilePage.clickSavePersonalProfile();
+
+		//刷新页面验证
+		getDriver().navigate().refresh();
+
+		WaitCondition.waitTextToBePresentInElementValue(PersonalProfilePage.nickname, expectNickName, 20);
+		
+		WatchPage.clickWatch();
+		WatchBean bean =WatchPage.getWatchBean();
+		Assert.assertEquals(bean.getNickname(), nickname);
+	}
+	/** 
+	* @Title: testLocation 
+	* @Date:2017年9月28日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 修改位置
+	*/
+	@Test
+	public void testLocation(){
+		PersonalProfilePage.navToInfo();
+		
+		PersonalProfilePage.inputArea("四川-宜宾");
+		PersonalProfilePage.clickSavePersonalProfile();
+
+		//刷新页面验证
+		getDriver().navigate().refresh();
+
+		WatchPage.clickWatch();
+		WatchBean bean =WatchPage.getWatchBean();
+		Assert.assertEquals(bean.getLocation(), "四川-宜宾");
+	}
+	/** 
+	* @Title: testPersonalizedSignature 
+	* @Date:2017年9月28日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 修改个性签名 
+	* @param value void
+	*/
+	@Test(description="个性签名",dataProvider="motoo",dataProviderClass=TestDataProvider.class)
+	public void testPersonalizedSignature(String value){
+		PersonalProfilePage.navToInfo();
+		
+		String expect = value;
+		PersonalProfilePage.inputMotto(expect);;
+		PersonalProfilePage.clickSavePersonalProfile();
+
+		//刷新页面验证
+		getDriver().navigate().refresh();
+		
+		WatchPage.clickWatch();
+		WatchBean bean =WatchPage.getWatchBean();
+		Assert.assertEquals(bean.getSignature(), value);
 	}
 	@AfterMethod
 	public void AfterMethod(){

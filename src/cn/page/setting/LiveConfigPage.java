@@ -21,6 +21,7 @@ import java.awt.event.KeyEvent;
 
 import cn.page.AccountPage;
 import cn.page.HomePage;
+import cn.page.NotificationsPage;
 import util.Log;
 
 /** 
@@ -69,7 +70,7 @@ public class LiveConfigPage  extends VP{
 				notOkWatcher.add(webElement);
 			}
 		}
-		Log.info(notOkWatcher.size()+"");
+		Log.info(isOk+"",notOkWatcher.size()+"");
 		return notOkWatcher;
 	}
 
@@ -85,7 +86,13 @@ public class LiveConfigPage  extends VP{
 		Log.info(allWatcher.size()+"");
 		return allWatcher;
 	}
-	//已选择的好友
+	/** 
+	* @Title: watchsHasbeenSelected 
+	* @Date:2017年10月18日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 右边列表，已选择的好友
+	* @return List<WebElement>
+	*/
 	public static List<WebElement> watchsHasbeenSelected(){
 		List<WebElement> watchsHasbeenSelected = getElements(By.cssSelector(".watch-right>ul>li"));
 		Log.info(watchsHasbeenSelected.size()+"");
@@ -186,6 +193,7 @@ public class LiveConfigPage  extends VP{
 			break;
 		case "someone":
 			clickElement(someone);
+			waitUntilByFind(NotificationsPage.news_pop_up, 10);
 			break;
 		default:
 			break;
@@ -211,7 +219,6 @@ public class LiveConfigPage  extends VP{
 		return privilege;
 	}
 	public static void navToLiveConfig(){
-		AccountPage.loginAccount();
 		HomePage.clickAavtar();
 		HomePage.clickSetting();
 		NavToSetting.navToEditInfo("直播配置");

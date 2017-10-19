@@ -32,7 +32,7 @@ public class RunAll {
 		// TODO Auto-generated method stub
 		ArrayList<Class<?>> classList = new ArrayList<Class<?>>();
 		
-		String root = "src\\ckt\\ios\\testcase";
+		String root = "src\\cn\\testcase";
 		List<File> files = new ArrayList<File>();
 		allFiles(root, files);
 		for (File file : files) {
@@ -51,6 +51,6 @@ public class RunAll {
 			classes[i]=classList.get(i);
 		}
 		testNG.setTestClasses(classes);
-		//testNG.run();
+		testNG.run();
 	}
 }

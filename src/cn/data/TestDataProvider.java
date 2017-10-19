@@ -36,7 +36,7 @@ public class TestDataProvider extends VP{
 	@DataProvider()
 	public static Object[][] nickname(Method method) {
 		obj= new Object[][] { 
-				{getRandomString(1)}, 
+				{getRandomString(5)}, 
 				{getRandomString(15)}
 		};  
 		return obj;

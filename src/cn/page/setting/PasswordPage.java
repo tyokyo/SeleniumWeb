@@ -29,7 +29,6 @@ public class PasswordPage  extends VP{
 		static By rtmp_stop = By.xpath("/html/body/div[2]/div/div[2]/div[5]/div[3]/button");
 		
 		public static void navToModifyPassword(){
-			AccountPage.loginAccount();
 			HomePage.clickAavtar();
 			HomePage.clickSetting();
 			NavToSetting.navToEditInfo("修改密码");

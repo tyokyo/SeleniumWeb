@@ -2,17 +2,15 @@ package cn.testcase;
 
 import java.util.List;
 import java.util.Set;
-
 import model.VP;
 import model.WaitCondition;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-
 import util.TakeScreen;
 import cn.bean.FollowBean;
 import cn.bean.WatchBean;
@@ -25,10 +23,17 @@ import cn.page.PromotionPage;
 import cn.page.WatchPage;
 
 public class DiscoverCase extends VP{
-
+	/*@Parameters({"browser","username","password"})
+	@BeforeMethod
+	public void beforeTest(String browser,String username,String password){
+		initialize(browser,username,password);
+		startSioeye();
+		AccountPage.loginAccount();
+	}*/
+	
 	@BeforeMethod
 	public void BeforeMethod(){
-		initialize("chrome","tyokyo@126.com","1234567890");
+		initialize("chrome","tyokyo@126.com","123456789");
 		startSioeye();		
 		AccountPage.loginAccount();
 	}
@@ -41,7 +46,7 @@ public class DiscoverCase extends VP{
 	*/
 	@Test(description="播放视频-评论",dataProvider="offlinevideo",dataProviderClass=TestDataProvider.class)
 	public void testDiscoverVideoThenComment (String videoDomain){
-		HomePage.clickDiscover();
+		WatchPage.clickDiscover();
 		Set<String> oldhandles = getDriver().getWindowHandles();
 		List<WebElement> divs = getDriver().findElements(By.cssSelector(".live-box>div"));
 		boolean find = false;
@@ -61,10 +66,11 @@ public class DiscoverCase extends VP{
 					TakeScreen.takeScreenShotWithDraw(domain);
 					
 					waitUntilByFindAttribute(HomePage.comment_input, "placeholder", "文明上网理性发言", 30);
-					HomePage.commentInput("不错，效果很好");
+					String commentString = getRandomString(10);
+					HomePage.commentInput(commentString);
 					HomePage.clickSendComments();
-					boolean actival = waitUntilByFindText(By.cssSelector(".user-box>p"), "不错，赞", 20);
-					TakeScreen.takeScreenShotWithDraw("account_page");
+					boolean actival = waitUntilByFindText(By.cssSelector(".user-box>p"), commentString, 20);
+					TakeScreen.takeScreenShotWithDraw("discover_page");
 					find=true;
 					Assert.assertEquals(actival, true,"send comment");
 					break;
@@ -81,7 +87,7 @@ public class DiscoverCase extends VP{
 	*/
 	@Test(description="播放视频-点赞",dataProvider="offlinevideo",dataProviderClass=TestDataProvider.class)
 	public void testDiscoverVideoThenLike(String videoDomain){
-		HomePage.clickDiscover();
+		WatchPage.clickDiscover();
 		Set<String> oldhandles = getDriver().getWindowHandles();
 		List<WebElement> divs = getDriver().findElements(By.cssSelector(".live-box>div"));
 		boolean find = false;
@@ -228,12 +234,14 @@ public class DiscoverCase extends VP{
 					String status =DiscoverPage.getFollowStatus();
 					String id = DiscoverPage.getViewSioeyeId();
 					DiscoverPage.clickFollow();
+					wait(5);
 					waitUntilByFindAttribute(DiscoverPage.follow, "data-follow-status", "follow", 5);
 					WatchPage.clickWatch();
-					
+					wait(5);
 					WatchBean afterBean = WatchPage.getWatchBean();
-					
 					WatchPage.clickUserFollow();
+					wait(5);
+					
 					List<FollowBean> infos = WatchPage.getAllFollowInfo();
 					if ("follow".equals(status)) {
 						boolean actual = PromotionPage.hasValue(infos, id);
@@ -271,6 +279,23 @@ public class DiscoverCase extends VP{
 		List<FollowBean> infos = WatchPage.getAllFollowInfo();
 		boolean actual = PromotionPage.hasValue(infos, id);
 		Assert.assertEquals(actual, true,id);
+	}
+	/** 
+	* @Title: testRefresh 
+	* @Date:2017年10月17日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description:推荐达人-换一批
+	*/
+	@Test
+	public void testRefresh(){
+		WatchPage.clickDiscover();
+		scrollToElement(HomePage.recommand_user, 5);
+		List<String> before = DiscoverPage.getAllRecommandUser();
+		HomePage.clickRefresh();
+		List<String> after = DiscoverPage.getAllRecommandUser();
+		before.removeAll(after);
+		after.remove(before);
+		Assert.assertEquals(before.size(), after.size());
 	}
 	@AfterMethod
 	public void AfterMethod(){

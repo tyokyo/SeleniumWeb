@@ -27,7 +27,7 @@ public class HomePage  extends VP{
 	//搜索用户
 	static By btns_search_user =By.cssSelector("a[class='resource-user active']");
 	//登录
-	static By btn_login = By.cssSelector("a[class='btn-login avatar']");
+	static By btn_login = By.cssSelector("[class='btn-login avatar']");
 	//头像
 	static By avatar = By.cssSelector("[class='btn-login avatar log-on']");
 	//个人主页
@@ -40,7 +40,9 @@ public class HomePage  extends VP{
 	public static By comment_input = By.id("comment-input");
 	//发送评论
 	public static By comment_send = By.id("comment-send");
-
+	//推荐达人
+	public static By recommand_user = By.className("master-recommend");
+	
 	/** 
 	 * @Title: clickLogo 
 	 * @author qiang.zhang@ck-telecom.com
@@ -155,7 +157,7 @@ public class HomePage  extends VP{
 	/** 
 	 * @Title: clickLoginbtn 
 	 * @author qiang.zhang@ck-telecom.com
-	 * @Description: 点击登录    
+	 * @Description: 主页，点击登录，进入登陆页面    
 	 * @return void    返回类型 
 	 */
 	public static void clickLoginbtn(){
@@ -210,6 +212,7 @@ public class HomePage  extends VP{
 	public static void commentInput(String comments){
 		wait(5);
 		sendKeys(comment_input, comments);
+		wait(3);
 	}
 	/** 
 	* @Title: clickSendComments 
@@ -219,5 +222,30 @@ public class HomePage  extends VP{
 	*/
 	public static void clickSendComments(){
 		clickElement(comment_send);
+		wait(3);
+	}
+	
+	
+	/** 
+	* @Title: clickRefresh 
+	* @Date:2017年10月17日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 推荐达人-刷新
+	*/
+	public static void clickRefresh(){
+		WebElement element =getElement(By.className("master-recommend")).findElement(By.className("refresh"));
+		clickElement(element);
+		wait(5);
+	}
+	/** 
+	* @Title: clickMore 
+	* @Date:2017年10月19日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 更多
+	*/
+	public static void clickMore(){
+		WebElement element =getElement(By.cssSelector("div.live-types.recent-live")).findElement(By.className("refresh"));
+		clickElement(element);
+		wait(5);
 	}
 }

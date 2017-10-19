@@ -34,7 +34,6 @@ public class PersonalProfilePage extends VP{
 	static By save_personal = By.id("save-personal-info");
 	
 	public static void navToInfo(){
-		AccountPage.loginAccount();
 		HomePage.clickAavtar();
 		HomePage.clickSetting();
 		NavToSetting.navToEditInfo("个人资料");
@@ -280,7 +279,23 @@ public class PersonalProfilePage extends VP{
 			boolean isChecked = hasAttribute(attElement, "checked");
 			hobbys.put(hobbyname,isChecked);
 		}
+		
 		return hobbys;
+	}
+	public static String getAllHobbyString(){
+		String hobbysString="";
+		List<WebElement> divList = getElements(By.cssSelector(".me-hobby-box>div"));
+		for (int i = 0; i < divList.size(); i++) {
+			WebElement webElement=divList.get(i);
+			WebElement labElement=webElement.findElement(By.tagName("label"));
+			WebElement attElement=webElement.findElement(By.tagName("input"));
+			String hobbyname = labElement.getText();
+			boolean isChecked = hasAttribute(attElement, "checked");
+			if (isChecked) {
+				hobbysString=hobbysString+" "+hobbyname;
+			}
+		}
+		return hobbysString.replaceFirst(" ", "");
 	}
 	/** 
 	* @Title: getHobbyStatus 

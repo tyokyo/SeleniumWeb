@@ -181,7 +181,7 @@ public class TestNgXml extends BaseSelenium {
 		}
 	}
 	public static void main(String args[]) throws Exception{
-		String root = "src\\view\\testcase";
+		String root = "src\\cn\\testcase";
 		String folder = "xml";
 		getXmlClassList(folder,root);
 		//buildAllClassesInOne(folder, root);

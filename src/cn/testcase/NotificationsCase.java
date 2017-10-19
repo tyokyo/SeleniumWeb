@@ -4,17 +4,58 @@ import model.VP;
 
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
 import cn.page.AccountPage;
+import cn.page.HomePage;
+import cn.page.NotificationsPage;
 
 public class NotificationsCase extends VP{
-
+	@Parameters({"browser","username","password"})
 	@BeforeMethod
-	public void BeforeMethod(){
-		initialize("chrome","tyokyo@126.com","1234567890");
-		startSioeye();		
+	public void beforeTest(String browser,String username,String password){
+		initialize(browser,username,password);
+		startSioeye();
 		AccountPage.loginAccount();
 	}
+	@Test
+	public void testReplayComments(){
+		HomePage.clickNotifacations();
+		NotificationsPage.clickReplay();
+		NotificationsPage.inputReply("Cool");
+		NotificationsPage.clickSendReplyBtn();
+		waitUntilByGone(NotificationsPage.reply_btn_send, 10);
+		wait(10);
+	}
+	@Test
+	public void testViewSystemNews(){
+		HomePage.clickNotifacations();
+		NotificationsPage.clickNews_system();
+		waitUntilByFind(NotificationsPage.news_pop_up, 10);
+		NotificationsPage.clickCloseBtn();
+	}
+	@Test
+	public void testViewVipNews(){
+		HomePage.clickNotifacations();
+		NotificationsPage.clickNews_vip();
+		waitUntilByFind(NotificationsPage.news_pop_up, 10);
+		NotificationsPage.clickCloseBtn();
+	}
+	@Test
+	public void testViewFabulousNews(){
+		HomePage.clickNotifacations();
+		NotificationsPage.clickNews_fabulous();
+		waitUntilByFind(NotificationsPage.news_pop_up, 10);
+		NotificationsPage.clickCloseBtn();
+	}
+	@Test
+	public void testViewNotificationsNews(){
+		HomePage.clickNotifacations();
+		NotificationsPage.clickNews_notifications();
+		waitUntilByFind(NotificationsPage.news_pop_up, 10);
+		NotificationsPage.clickCloseBtn();
+	}
+	
 	@AfterMethod
 	public void AfterMethod(){
 		quiteSelenium();
