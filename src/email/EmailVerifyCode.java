@@ -52,6 +52,8 @@ public class EmailVerifyCode extends VP{
 		Session session = Session.getInstance(props);
 		Store store = session.getStore("pop3");
 		//store.connect("zhangqiang502502@163.com", "**************");
+		//store.connect("lolopiao@163.com", "Baidu@piao");
+		
 		String username = Property.getValueByKey(accountPath, "email_code_username");
 		String password = Property.getValueByKey(accountPath, "email_code_password");
 		store.connect(username, password);

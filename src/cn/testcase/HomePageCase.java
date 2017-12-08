@@ -35,7 +35,6 @@ public class HomePageCase  extends VP{
 		initialize(browser,username,password);
 		startSioeye();
 	}
-
 	/** 
 	 * @Title: testPlayWonderfulLive 
 	 * @Date:2017年9月26日
@@ -276,9 +275,9 @@ public class HomePageCase  extends VP{
 	 */
 	public void testRefresh(){
 		scrollToElement(HomePage.recommand_user, 10);
-		List<String> before = DiscoverPage.getAllRecommandUser();
+		List<String> before = DiscoverPage.getAllRecommandUserHref();
 		HomePage.clickRefresh();
-		List<String> after = DiscoverPage.getAllRecommandUser();
+		List<String> after = DiscoverPage.getAllRecommandUserHref();
 		before.removeAll(after);
 		after.remove(before);
 		Assert.assertEquals(before.size(), after.size());

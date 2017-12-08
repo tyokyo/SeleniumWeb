@@ -18,13 +18,23 @@ import model.VP;
 import model.WaitCondition;
 
 public class WatchCase extends VP{
-	@Parameters({"browser","username","password"})
+	/*@Parameters({"browser","username","password"})
 	@BeforeMethod
 	public void beforeTest(String browser,String username,String password){
 		initialize(browser,username,password);
 		startSioeye();
 		AccountPage.loginAccount();
+	}*/
+	
+	@BeforeMethod
+	public void BeforeMethod(){
+		initialize("firefox","tyokyo@126.com","123456789");
+		startSioeye();		
+		deleteAllVideoInDownloadFolder();
+		AccountPage.loginAccount();
 	}
+	
+	
 	/** 
 	* @Title: addRecommandFollow 
 	* @Date:2017年10月13日

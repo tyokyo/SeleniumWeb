@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.os.WindowsUtils;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -17,12 +18,12 @@ import util.Property;
 
 import org.apache.log4j.PropertyConfigurator; 
 /** 
-* @ClassName: BaseSelenium 
-* @Description: TODO(这里用一句话描述这个类的作用) 
-* @author qiang.zhang@ck-telecom.com
-* @date 2017年9月14日 下午2:52:37 
-*  
-*/
+ * @ClassName: BaseSelenium 
+ * @Description: TODO(这里用一句话描述这个类的作用) 
+ * @author qiang.zhang@ck-telecom.com
+ * @date 2017年9月14日 下午2:52:37 
+ *  
+ */
 public class BaseSelenium {
 	private static  WebDriver driver;
 	private static  ParameterBean  bean;;
@@ -35,25 +36,25 @@ public class BaseSelenium {
 	public static void setDriver(WebDriver driver) {
 		BaseSelenium.driver=driver;
 	}
-	
+
 	/** 
-	* @Title: startSioeye 
-	* @Date:2017年9月13日
-	* @author qiang.zhang@ck-telecom.com
-	* @Description: 启动被测页面
-	*/
+	 * @Title: startSioeye 
+	 * @Date:2017年9月13日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 启动被测页面
+	 */
 	public static void launchUrl(String url){
-		String browser = getBean().getBrowser();
+		String browser = getBean().getBrowser().toUpperCase();
 		Log.info("start browser-"+browser);
 		switch (browser.toUpperCase()) {
 		case "FIREFOX":
 			initFireFoxDriver(url);
 			break;
 		case "CHROME":
-			initChromeDriver();
+			initChromeDriver(url);
 			break;
 		case "IE":
-			initIE();;
+			initIE(url);;
 			break;
 		default:
 			System.out.println("error browser name");
@@ -79,15 +80,14 @@ public class BaseSelenium {
 		VP.killProcess("firefox");
 		Log.info("init firefox browser");
 		String driver_path = System.getProperty("user.dir")+"\\driver\\firefox\\64\\geckodriver.exe";
-		//firefox版本低于48
-		//System.setProperty("webdriver.firefox.marionette", driver_path);  
 		System.setProperty("webdriver.gecko.driver", driver_path);
-		DesiredCapabilities capabilities = DesiredCapabilities.firefox();
-		capabilities.setCapability("marionette", true);
-		//初始化一个FireFox浏览器实例，实例名称叫driver    
-		driver=new FirefoxDriver(capabilities);
-		//最大化窗口  
-		//driver.manage().window().maximize();  
+		FirefoxOptions options = new FirefoxOptions();
+		String firefox=System.getProperty("user.dir")+"\\browser\\firefox49.0\\bin\\firefox.exe";
+		options.setBinary(firefox);
+		options.addArguments("--headless");
+		driver = new FirefoxDriver(options);
+		driver.manage().window().maximize();    
+		driver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);    
 		startTestAddress(url);
 	}
 	public static void startTestAddress(String url){
@@ -109,7 +109,7 @@ public class BaseSelenium {
 	 * @Description: http://chromedriver.storage.googleapis.com/2.31/notes.txt    注意版本匹配
 	 * @return void    返回类型 
 	 */
-	private static void initChromeDriver(){
+	private static void initChromeDriver(String url){
 		WindowsUtils.killByName("chromedriver.exe");
 		WindowsUtils.killByName("chrome.exe");
 
@@ -123,8 +123,8 @@ public class BaseSelenium {
 		o.setBinary(System.getProperty("user.dir")+"\\browser\\chrome\\chrome.exe");
 		//初始化一个chrome浏览器实例，实例名称叫driver    
 		driver = new ChromeDriver(o);
-		String URL = Property.getValueByKey("properties/config.properties", "URL");
-		startTestAddress(URL);
+		//String URL = Property.getValueByKey("properties/config.properties", "URL");
+		startTestAddress(url);
 	}
 
 	/**
@@ -133,30 +133,30 @@ public class BaseSelenium {
 	 *本地Intrant,受信任站点 三个地方的安全界面都设置相同等级
 	 *例如都设置中；
 	 */
-	private static  void initIE(){
+	private static  void initIE(String url){
 		Log.info("init ie browser");
-		System.setProperty("webdriver.ie.driver", ".\\Tools\\IEDriverServer.exe");    
-		//初始化一个IE浏览器实例，实例名称叫driver    
-		WebDriver driver = new  InternetExplorerDriver();   
-		//最大化窗口    
+        String IEPath = "C:\\Program Files\\Internet Explorer\\iexplore.exe";
+		String driver_path = System.getProperty("user.dir")+"\\driver\\ie\\32\\IEDriverServer.exe";
+		
+		System.setProperty("webdriver.ie.driver", driver_path);    
+		System.setProperty("webdriver.ie.bin", IEPath);
+
+		DesiredCapabilities capabilities = new DesiredCapabilities();
+		capabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS,true);
+		capabilities.setCapability("ignoreProtectedModeSettings", true);
+		
+		driver = new  InternetExplorerDriver(capabilities); 
 		driver.manage().window().maximize();    
-		//设置隐性等待时间    
 		driver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);    
-		// get()打开一个站点    
-		driver.get("https://www.baidu.com");    
-		//getTitle()获取当前页面title的值    
-		System.out.println("当前打开页面的标题是： "+ driver.getTitle());    
-		//关闭并退出浏览器    
-		driver.quit();    
+		startTestAddress(url);
 	}
 
-	
 	/** 
-	* @Title: quiteSelenium 
-	* @Date:2017年9月13日
-	* @author qiang.zhang@ck-telecom.com
-	* @Description: 关闭并退出浏览器,清除Cookies
-	*/
+	 * @Title: quiteSelenium 
+	 * @Date:2017年9月13日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 关闭并退出浏览器,清除Cookies
+	 */
 	public static void quiteSelenium(){
 		try {
 			Log.info("quit  browser");
@@ -174,13 +174,13 @@ public class BaseSelenium {
 			// TODO: handle exception
 		}
 	}
-	
+
 	/** 
-	* @Title: restart 
-	* @Date:2017年9月14日
-	* @author qiang.zhang@ck-telecom.com
-	* @Description: 关闭并退出浏览器,清除Cookies，再启动测试页面
-	*/
+	 * @Title: restart 
+	 * @Date:2017年9月14日
+	 * @author qiang.zhang@ck-telecom.com
+	 * @Description: 关闭并退出浏览器,清除Cookies，再启动测试页面
+	 */
 	public static void restart(){
 		String url = driver.getCurrentUrl();
 		driver.manage().deleteAllCookies();

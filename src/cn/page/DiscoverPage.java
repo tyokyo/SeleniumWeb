@@ -123,6 +123,21 @@ public class DiscoverPage extends VP{
 		return user;
 	}
 	/** 
+	* @Title: getAllRecommandUserHref 
+	* @Date:2017年10月31日
+	* @author qiang.zhang@ck-telecom.com
+	* @Description: 所有推荐达人的href
+	* @return List<String>
+	*/
+	public static List<String> getAllRecommandUserHref(){
+		List<String> user = new ArrayList<String>();
+		List<WebElement> elements = getElements(By.cssSelector("div.recommend-user.recommend-user-name"));
+		for (WebElement webElement : elements) {
+			user.add(webElement.getAttribute("href"));
+		}
+		return user;
+	}
+	/** 
 	* @Title: clickFirstBigFunRecommand 
 	* @Date:2017年10月17日
 	* @author qiang.zhang@ck-telecom.com

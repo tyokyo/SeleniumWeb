@@ -749,5 +749,15 @@ public class VP  extends BaseSelenium{
 		}
 		return String.valueOf(str.charAt(0));
 	}
+	public static void deleteAllVideoInDownloadFolder(){
+		String folder = "C:\\Users\\DELL\\Downloads";
+		File f = new File(folder);
+		File[] filses = f.listFiles();
+		for (File file : filses) {
+			if (file.getAbsolutePath().toLowerCase().endsWith(".mp4")) {
+				file.delete();
+			}
+		}
+	}
 
 }
